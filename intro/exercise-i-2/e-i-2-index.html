@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+        integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+        integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+        crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Main Style-->
+    <link rel="stylesheet" type="text/css" href="../../style.css" />
+
+    <title>Exercise I-2</title>
+</head>
+
+<body>
+    <h1>Exercise I.2</h1>
+    <p>
+        What is the probability of drawing two aces in a row from a deck of fifty-two cards?
+    </p>
+
+    <h1>Solution</h1>
+    <p>
+        Let \(a\) be the number of aces in a deck of cards, let \(d\) be the number of cards in a deck. The author
+        demonstrates the probability of drawing one ace from a deck of fifty-two cards as
+        $$
+        a \div d = 4 \div 52 = 0.077 = 7.7\%
+        $$
+        The author also explains the probability of an event occuring multiple times in sequence. This is done by
+        multiplying the individual probabilities of the events. So let \(p\) be the probability of drawing an ace from
+        the deck of fifty-two cards. The probability of drawing an ace twice in a row is
+        $$
+        p \cdot p = 0.077 \cdot 0.077 = 0.0059 = 0.006\%
+        $$
+    </p>
+</body>
+
+</html>

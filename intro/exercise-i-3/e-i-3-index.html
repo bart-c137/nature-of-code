@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <script src="../../p5/p5.min.js"></script>
+  <script src="../../p5/addons/p5.sound.min.js"></script>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+    integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+    integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+    crossorigin="anonymous"></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Highlight JS -->
+  <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+  <!-- Main Style-->
+  <link rel="stylesheet" type="text/css" href="../../style.css" />
+
+  <title>Exercise I-3</title>
+</head>
+
+<body>
+  <h1>Exercise I.3</h1>
+  <p>
+    Create a random walker with dynamic probabilities. For example, can you give it a 50% chance of moving in the
+    direction of the mouse?
+  </p>
+
+  <div id="canvas"></div>
+
+  <h1>Solution</h1>
+  <p>
+    My solution was first to determine when to make a random walk and when to make a walk towards the mouse. I added
+    this into the <code>update</code> function.
+  </p>
+  <pre><code class="language-javascript">update() {
+  let p = random();
+
+  if (p >= 0.7) {
+    this.moveToMouse();
+  } else {
+    this.randomMove();
+  }
+}</code></pre>
+  <p>
+    In this case I am moving to the mouse 30% of the time. The <code>random</code> function will return a value between
+    0 and 1 and when that value is <strong>greater</strong> than 0.7 than the move is towards the mouse. This means when
+    the value is betwen 0.0 and 0.69 the move is random. The <code>randomMove</code> function is the same as in the
+    other introductory examples. The function <code>moveToMouse</code> is new.
+  </p>
+  <pre><code class="language-javascript">moveToMouse() {
+  let dirX = mouseX - this.x;
+  let dirY = mouseY - this.y;
+
+  if (dirX &gt;= 0) {
+    this.moveRight();
+  } else if (dirX &lt; 0) {
+    this.moveLeft();
+  }
+
+  if (dirY &lt;= 0) {
+    this.moveUp();
+  } else if (dirY &gt; 0) {
+    this.moveDown();
+  }
+}</code></pre>
+
+  <p>First check the x and y direction. If the difference between the mouse x and current x values is positive, it means
+    the mouse is to the right of the current position. If the difference is negative, it means the mouse is to the left.
+    Similarly, a positive y difference means the mouse is below the current position and a negative one means the mouse
+    is above the current position.
+  </p>
+
+  <h1>Edit</h1>
+  <p>
+    After seeing the solution from the author on <a
+      href="https://github.com/meleyal/The-Nature-of-Code/blob/master/ch0_intro/e08_walker_dynamic/e08_walker_dynamic.pde"
+      target="_blank">GitHub</a> I realize that there is no need to check the difference between the mouse x and the
+      current position since the point (0, 0) is in the top left.  For example, if the mouse x is greater than the
+      current x, you must increase the current x to get there.  Likewise for the other directions.
+  </p>
+
+  <script src="./Walker.js"></script>
+  <script src="./sketch.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+
+</html>

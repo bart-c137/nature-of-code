@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="../../p5/p5.min.js"></script>
+    <script src="../../p5/addons/p5.sound.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Highlight JS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+    <!-- Main Style -->
+    <link rel="stylesheet" type="text/css" href="../../style.css" />
+
+    <title>Exercise I-1</title>
+</head>
+
+<body>
+    <h1>Exercise I.1</h1>
+    <p>
+        Create a random walker that has a tendency to move down and to the right.
+    </p>
+    <div id="canvas"></div>
+
+    <h1>Solution</h1>
+    <p>
+        Consider the walker should go right and down 30% of the time. In this case it should go
+        left and up 20% of the time. A simple way to do this is
+    </p>
+    <ol>
+        <li>Pick a random number from 1 through 10.</li>
+        <li>If the value is between 1 and 3 inclusive, move right.</li>
+        <li>If the value is between 4 and 6 inclusive, move down.</li>
+        <li>If the value is between 7 and 8 inclusive, move left.</li>
+        <li>If the value is between 9 and 10 inclusive, move up.</li>
+    </ol>
+    <p>
+        In code this is implemented as
+    </p>
+    <pre><code class="language-javascript">update() {
+  let step = int(random(10));
+
+  switch(step) {
+  case 0:
+  case 1:
+  case 2:
+      this.x++;
+      break;
+  case 3:
+  case 4:
+  case 5:
+      this.y++;
+      break;
+  case 6:
+  case 7:
+      this.x--;
+      break;
+  case 8:
+  case 9:
+      this.y--;
+      break;
+  default:
+      console.log("Unknonw random " + step);
+  }
+}</code></pre>
+    <p>
+        3 out of 10 is 30% and 2 out of 10 is 20%. Using the algorithm above, the walker will
+        move down and to the right 30% of the time.
+    </p>
+    <script src="./Walker.js"></script>
+    <script src="./sketch.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+
+</html>

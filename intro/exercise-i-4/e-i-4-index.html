@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <script src="../../p5/p5.min.js"></script>
+  <script src="../../p5/addons/p5.sound.min.js"></script>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+    integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+    integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+    crossorigin="anonymous"></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Highlight JS -->
+  <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+  <!-- Main Style-->
+  <link rel="stylesheet" type="text/css" href="../../style.css" />
+
+  <title>Exercise I-4</title>
+</head>
+
+<body>
+  <h1>Exercise I.4</h1>
+  <p>
+    Consider a simulation of paint splatter drawn as a collection of colored dots.  Most of the paint clusters around
+    a central location, but some dots do splatter out towards the edges.  Can you use a normal distribution of random
+    numbers to generate the locations of the dots?  Can you also use a normal distribution of random numbers to
+    generate the color palette?
+  </p>
+
+  <div id="canvas"></div>
+
+  <h1>Solution</h1>
+  <p>
+    This problem is asking for a normal distribution of points along the X and Y axis and the solution is to address
+    each axis independantly.  For the X axis, the mean is the middle of the canvas, calculated as
+    <code>width / 2</code>.  For the standarad deviation, I wanted to have 4 standard deviations visible on the canvas,
+    this can be calculated as <code>width / 8</code>.  The division is by 8 because there is a total of 8 standard
+    deviations on the canvas, 4 on each side of the mean.  It is now possible to get the Gaussian random number with
+    <code>randomGaussian(mean, standardDeviation)</code> to use as the x value.  This same exact process is done for
+    the y value.
+  </p>
+
+  <pre><code class="language-javascript">update() {
+  let meanWidth = width / 2;
+  let stdDevWidth = width / 8;
+
+  let meanHeight = height / 2;
+  let stdDevHeight = height / 8;
+
+  let randomX = randomGaussian(meanWidth, stdDevWidth);
+  let randomY = randomGaussian(meanHeight, stdDevHeight);
+
+  this.x = randomX;
+  this.y = randomY;
+}</code></pre>
+
+  <p>
+    For a normalized color palette, I created a function <code>randomColorValue</code> which will return a normalized
+    value between 0 and 255.  I am using the RGB color format and will call this function 3 times: once for the red
+    value, once for the green, and once for the blue.  I used 127.5 as the mean (255 / 2) and wanted 8 standarad
+    deviations so divided by 8 again.
+  </p>
+  <pre><code class="language-javascript">randomColorValue() {
+  let mean = 255 / 2;
+  let stdDev = 255 / 8;
+
+  return randomGaussian(mean, stdDev);
+}</code></pre>
+
+  <script src="./Splatter.js"></script>
+  <script src="./sketch.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+
+</html>
