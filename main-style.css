@@ -1,4 +1,6 @@
-/* Computer Modern Concrete Font */
+/*
+ * COMPUTER MODERN CONCRETE FONT
+ */
 @font-face {
     font-family: 'Computer Modern Concrete';
     src: url('./cm-font/cmunorm.otf');
@@ -34,11 +36,13 @@
     font-weight: bold;
 }
 
+/*
+ * MAIN STYLE
+ */
 html {
     padding: 0;
     margin: 0;
 
-    /* font-family: 'Noto Serif', serif; */
     font-family: 'Computer Modern Concrete', 'Noto Serif', serif;
     font-size: 18px;
     line-height: 1.5;
