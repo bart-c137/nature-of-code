@@ -3,59 +3,34 @@ class Walker {
         this.x = width / 2;
         this.y = height / 2;
 
-        this.random = 0;
-        this.mouse = 0;
-    }
+        this.previousX = this.x;
+        this.previousY = this.y;
 
-    moveRight() {
-        this.x++;
-    }
-
-    moveLeft() {
-        this.x--;
-    }
-
-    moveUp() {
-        this.y--;
-    }
-
-    moveDown() {
-        this.y++;
-    }
-
-    moveToMouse() {
-        let dirX = mouseX - this.x;
-        let dirY = mouseY - this.y;
-
-        if (dirX >= 0) {
-            this.moveRight();
-        } else if (dirX < 0) {
-            this.moveLeft();
+        this.counts = new Array(20);
+        for(let i = 0; i < this.counts.length; i++) {
+            this.counts[i] = 0;
         }
-
-        if (dirY <= 0) {
-            this.moveUp();
-        } else if (dirY > 0) {
-            this.moveDown();
-        }
+        this.mean = 10;
+        this.sd = 2;
     }
 
-    randomMove() {
+
+    randomMove(distance) {
         // 0 = left, 1 = right, 2 = up, 3 = down
         let rDir = int(random(0, 4));
 
         switch (rDir) {
             case 0:
-                this.moveLeft();
+                this.x -= distance;
                 break;
             case 1:
-                this.moveRight();
+                this.x += distance;
                 break;
             case 2:
-                this.moveUp();
+                this.y -= distance;
                 break;
             case 3:
-                this.moveDown();
+                this.y += distance;
                 break;
             default:
                 console.log("Unknown random walk: " + rDir);
@@ -63,17 +38,19 @@ class Walker {
     }
 
     update() {
-        let p = random();
+        this.previousX = this.x;
+        this.previousY = this.y;
 
-        if (p >= 0.7) {
-            this.moveToMouse();
-        } else {
-            this.randomMove();
+        let randomDistance = int(randomGaussian(this.mean, this.sd));
+        this.randomMove(randomDistance);
+
+        if(randomDistance >= 0 && randomDistance <= 19) {
+            this.counts[randomDistance]++;
         }
     }
 
     show() {
         stroke(0);
-        point(this.x, this.y);
+        line(this.previousX, this.previousY, this.x, this.y);
     }
 }
