@@ -6,6 +6,7 @@ class Walker {
         this.previousX = this.x;
         this.previousY = this.y;
 
+        // Keeps track of how many times each distance was picked by the random distribution
         this.counts = new Array(20);
         for(let i = 0; i < this.counts.length; i++) {
             this.counts[i] = 0;
@@ -14,6 +15,7 @@ class Walker {
         this.mean = 10;
         this.sd = 2;
 
+        // Keeps track of how often each direction is picked.  This should be uniform.
         this.left = 0;
         this.right = 0;
         this.up = 0;
@@ -75,6 +77,8 @@ class Walker {
         stroke(0);
         line(this.previousX, this.previousY, this.x, this.y);
 
+        // cannot redraw the background each time as it would erase the walk.  Instead draw
+        // rectangles where the text will be.
         noStroke();
         fill("#dfdfdf");
         rect(0, 0, 100, height);
