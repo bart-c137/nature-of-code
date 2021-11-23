@@ -5,8 +5,7 @@ class Walker {
         this.px = this.x;
         this.py = this.y;
 
-        this.tx = 0;
-        this.ty = 10000;
+        this.ts = 0;
 
         this.direction = ["L", "R", "U", "D"]; // left, right, up, down
     }
@@ -33,15 +32,14 @@ class Walker {
     }
 
     update() {
-        let stepSize = int(map(noise(this.tx), 0, 1, 0, 10));
+        let stepSize = int(map(noise(this.ts), 0, 1, 0, 10));
 
         this.px = this.x;
         this.py = this.y;
 
         this.randomMove(stepSize);
 
-        this.tx += 0.01;
-        this.ty += 0.01;
+        this.ts += 0.01;
     }
 
     show() {
