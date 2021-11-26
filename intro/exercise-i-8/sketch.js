@@ -1,7 +1,7 @@
 let w;
 
 function setup() {
-    let canvas = createCanvas(800, 800);
+    let canvas = createCanvas(200, 200);
     canvas.parent("canvas");
 
     background("#dfdfdf");
