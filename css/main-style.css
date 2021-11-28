@@ -3,36 +3,36 @@
  */
 @font-face {
     font-family: 'Computer Modern Concrete';
-    src: url('./cm-font/cmunorm.otf');
+    src: url('../cm-font/cmunorm.otf');
 }
 
 @font-face {
     font-family: 'Computer Modern Concrete';
-    src: url('./cm-font/cmunobx.otf');
+    src: url('../cm-font/cmunobx.otf');
     font-weight: bold;
 }
 
 @font-face {
     font-family: 'Computer Modern Concrete';
-    src: url('./cm-font/cmunoti.otf');
+    src: url('../cm-font/cmunoti.otf');
     font-style: italic;
 }
 
 @font-face {
     font-family: 'Computer Modern Concrete';
-    src: url('./cm-font/cmunobi.otf');
+    src: url('../cm-font/cmunobi.otf');
     font-weight: bold;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'Computer Modern Typewriter';
-    src: url('./cm-font/cmuntt.otf');
+    src: url('../cm-font/cmuntt.otf');
 }
 
 @font-face {
     font-family: 'Computer Modern Typewriter';
-    src: url('./cm-font/cmuntb.otf');
+    src: url('../cm-font/cmuntb.otf');
     font-weight: bold;
 }
 
