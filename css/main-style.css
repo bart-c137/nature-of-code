@@ -1,0 +1,71 @@
+/*
+ * COMPUTER MODERN CONCRETE FONT
+ */
+@font-face {
+    font-family: 'Computer Modern Concrete';
+    src: url('../cm-font/cmunorm.otf');
+}
+
+@font-face {
+    font-family: 'Computer Modern Concrete';
+    src: url('../cm-font/cmunobx.otf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Computer Modern Concrete';
+    src: url('../cm-font/cmunoti.otf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Computer Modern Concrete';
+    src: url('../cm-font/cmunobi.otf');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Computer Modern Typewriter';
+    src: url('../cm-font/cmuntt.otf');
+}
+
+@font-face {
+    font-family: 'Computer Modern Typewriter';
+    src: url('../cm-font/cmuntb.otf');
+    font-weight: bold;
+}
+
+/*
+ * MAIN STYLE
+ */
+html {
+    padding: 0;
+    margin: 0;
+
+    font-family: 'Computer Modern Concrete', 'Noto Serif', serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+body {
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+}
+
+canvas {
+    display: block;
+}
+
+code {
+    font-family: 'Computer Modern Typewriter', monospace;
+}
+
+p code {
+    color: #d63384;
+}
+
+li code {
+    color: #d63384;
+}
