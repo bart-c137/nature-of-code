@@ -49,40 +49,41 @@
 
   <h1>Solution</h1>
   <p>
-    Wow, OK, this was not easy.  The canvas is much smaller because at the 800 by 800 pixel size my PC was having
-    issues.  This exampleis working and you can change the values as you like to see the differences.
+    Wow, OK, this was not easy. The canvas is much smaller because at the 800 by 800 pixel size my PC was having
+    issues. This example is working and you can change the values as you like to see the differences.
   </p>
   <p>
     First off, the code to set the color for the pixels in p5.js is <em>significantly</em> different than in normal
-    processing.  I used the code directly from the 
+    processing. I used the code directly from the
     <a href="https://p5js.org/reference/#/p5/pixels" target="_blank">reference</a> document and I don't fully
-    understand it.  The code is for an individual pixel, so I put it in the function <code>setPixelColor()</code> which
-    accepts the x, y, and both offsets as an argument.
+    understand it. I also recommend watching the <a href="#video">video</a> at the bottom of the page for an
+    explination from the author. I used some of the his code from the video as well. The sample code in the p5.js
+    reference is for an individual pixel, so I put it in the function <code>setPixelColor()</code> which accepts the x,
+    y, and both offsets as an argument.
   </p>
 
-  <pre><code class="language-javascript">setPixelColor(x, y, xoff, yoff){
+  <pre><code class="language-javascript">setPixelColor(x, y, xoff, yoff) {
   let d = pixelDensity();
 
   for(let i = 0; i < d; i++) {
     for (let j = 0; j < d; j++) {
       let index = 4 * ((y * d + j) * width * d + (x * d + i));
 
-      let bright = map(noise(xoff, yoff), 0, 1, 0, 255);
-      let c = color(bright);
+      let c = noise(xoff, yoff) * 255;
 
-      pixels[index] = c._getRed();
-      pixels[index + 1] = c._getGreen();
-      pixels[index + 2] = c._getBlue();
-      pixels[index + 3] = c._getAlpha();
+      pixels[index + 0] = c;
+      pixels[index + 1] = c;
+      pixels[index + 2] = c;
+      pixels[index + 3] = 255;
     }
   }
 }</code></pre>
 
   <p>
-    I also had to use the debugger to get the methods to read the red, green, blue, and alpha values from the color.
-    They are private but this still worked.  In the <code>update()</code> function I loop through the pixels like in 
-    the book and make a call to the function.  Note the x and y offsets <strong>are passed into the function and are
-    updated outside of the <code>setPixelColor()</code> function</strong>.
+    The way to convert the noise value to a brightness is actually from the video, as is the way the color is set for
+    each pixel (that&apos;s why you see the + 0, it&apos;s in the video). In the <code>update()</code> function I loop
+    through the pixels like in the book and make a call to the function. Note the x and y offsets <strong>are passed 
+    into the function</strong> and are updated outside of the <code>setPixelColor()</code> function.
   </p>
 
   <pre><code class="language-javascript">update() {
@@ -104,6 +105,15 @@
 
   updatePixels();
 }</code></pre>
+
+  <h1 id="video">Video From Author</h1>
+  <p>
+    This is a video from the author, Daniel Shiffman, on two-dimensional Perlin noise. It helped me with the problem.
+  </p>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/ikwNrFvnL3g"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
 
   <script src="./Walker.js"></script>
   <script src="./sketch.js"></script>
