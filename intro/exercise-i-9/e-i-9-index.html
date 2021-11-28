@@ -69,12 +69,12 @@
 
   <pre><code class="language-javascript">// previous code before, see Exercise I.8
 
-let bright = map(noise(xoff, yoff, this.z), 0, 1, 0, 255);
+let c = noise(xoff, yoff, this.z) * 255;
 
 // more code after
 
 show() {
-  this.z += 0.1;
+  this.z += 0.01;
 }</code></pre>
 
   <script src="./Walker.js"></script>
