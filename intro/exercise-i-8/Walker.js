@@ -4,21 +4,19 @@ class Walker {
         this.y = 0;
     }
 
-    setPixelColor(x, y, xoff, yoff){
+    setPixelColor(x, y, xoff, yoff) {
         let d = pixelDensity();
 
-        for(let i = 0; i < d; i++) {
+        for (let i = 0; i < d; i++) {
             for (let j = 0; j < d; j++) {
                 let index = 4 * ((y * d + j) * width * d + (x * d + i));
 
-                let bright = map(noise(xoff, yoff), 0, 1, 0, 255);
-                let c = color(bright);
-                
+                let c = noise(xoff, yoff) * 255;
 
-                pixels[index] = c._getRed();
-                pixels[index + 1] = c._getGreen();
-                pixels[index + 2] = c._getBlue();
-                pixels[index + 3] = c._getAlpha();
+                pixels[index + 0] = c;
+                pixels[index + 1] = c;
+                pixels[index + 2] = c;
+                pixels[index + 3] = 255;
             }
         }
     }
@@ -34,10 +32,10 @@ class Walker {
             for (let y = 0; y < height; y++) {
                 this.setPixelColor(x, y, xoff, yoff);
 
-                yoff += 0.1;
+                yoff += 0.01;
             }
 
-            xoff += 0.1
+            xoff += 0.01
         }
 
         updatePixels();
