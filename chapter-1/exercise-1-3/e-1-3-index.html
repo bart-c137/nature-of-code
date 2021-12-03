@@ -35,63 +35,20 @@
   <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
   <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
 
-  <title>Exercise 1.2</title>
+  <title>Exercise 1.3</title>
 </head>
 
 <body>
-  <h1>Exercise 1.2</h1>
+  <h1>Exercise 1.3</h1>
   <p>
-    Take one of the walker examples from the introduction and convert it to use <code>PVector</code>s.
+    Extend the bouncing ball with vectors exaple into 3D.  Can you get a sphere to bounce around a box?
   </p>
 
   <h1>Solution</h1>
-
-  <div id="canvas"></div>
-
   <p>
-    I decided to convert the basic random walker from Figure I.1 with 8 possible step directions.  There are 2 basic
-    changes to the original example
+    I don't know how to use 3D with Processing.  Yet...
   </p>
 
-  <ul>
-    <li>The location of the walker needs to be a <code>PVector</code></li>
-    <li>The step taken by the walker must be a <code>PVecotr</code></li>
-  </ul>
-
-  <p>
-    Converting the location to a <code>PVector</code> is easy enough
-  </p>
-
-  <pre><code class="language-javascript">constructor() {
-  this.location = createVector(width / 2, height / 2);
-}</code></pre>
-
-  <p>
-    Converting the step to a <code>PVecotr</code> is also not difficult.  The random values picked in the example code
-    can be used directly to create the vector, in my case named <code>velocity</code>.  The random picking of the x and
-    y values means the <code>velocity</code> vector is also random.  Now <code>velocity</code> can be added to
-    <code>location</code>.
-  </p>
-  
-
-  <pre><code class="language-javascript">update() {
-  let x = int(random(0, 3)) - 1;
-  let y = int(random(0, 3)) - 1;
-
-  let velocity = createVector(x, y);
-
-  this.location.add(velocity);
-}</code></pre>  
-
-  <p>
-    Drawing the pint is just pulling the x and y values from the <code>location</code> vector.
-  </p>
-
-  <pre><code class="language-javascript">point(this.location.x, this.location.y);</code></pre>
-
-  <script src="./Walker.js"></script>
-  <script src="./sketch.js"></script>
-  <script>hljs.highlightAll();</script>
 </body>
 
 </html>
