@@ -4,12 +4,16 @@ class Mover {
         this.velocity = createVector(0, 0);
 
         this.acceleration = createVector(-0.001, 0.01);
-        this.acceleration.limit(10);
+        this.topSpeed = 10;
     }
 
     update() {
         this.velocity.add(this.acceleration);
+        this.velocity.limit(10);
         this.location.add(this.velocity);
+
+        let p = select("#output");
+        p.html(this.velocity.mag());
     }
 
     display() {
