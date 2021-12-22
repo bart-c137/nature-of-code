@@ -42,14 +42,96 @@
 <body>
     <h1>Exercise 1.5</h1>
     <p>
+        Create a simulation of a car (or runner) that accelerates when yo press the up key and brakes when you press the
+        down key.
     </p>
 
     <div id="canvas"></div>
     <p id="output"></p>
     <h1>Solution</h1>
+    <p>
+        A few things to note on how I understand the exercise
+    </p>
+    <ul>
+        <li>
+            The object accelerates by some amount only when the up key is pressed. Press the key once and the
+            acceleration is like a short burst. Each up key press adds a small amount of speed to the object.
+        </li>
+        <li>
+            Pressing the down key has the same effect, but it removes the acceleration.
+        </li>
+        <li>
+            The object has a direction and does NOT move backwards. This means pressing the down key cannot
+            increase the speed of the object in the backward direction.
+        </li>
+        <li>
+            Remoing all acceleration means the object is stopped.
+        </li>
+    </ul>
+    <p>
+        Following the rule of not manipulating the value of velocity and location directly, the only other option is to
+        add (accelerate) and subtract (decelerate) the acceleration vector to and from the velocity vector. I gave the
+        <code>Mover</code> class two new methods, <code>accelerate()</code> and <code>decelerate()</code> to control
+        what happens when the user presses the up key and the down key. However, following OOP practices, the
+        <code>Mover</code> class does not do any interaction with the user or the keyboard. <code>sketch.js</code> is
+        responsible for detecting which key is pressed and then calling the appropriate function in the
+        <code>Mover</code>.
+    </p>
+
+    <p>
+        Here is <code>sketch.js</code>
+    </p>
+
+    <pre><code class="language-javascript">var w;
+var p;
+
+function setup() {
+  let canvas = createCanvas(800, 800);
+  canvas.parent("canvas");
+
+  background(90);
+
+  w = new Mover();
+  p = select("#output");
+
+}
+
+/**
+ * Check which key is pressed and have the Mover react.
+ */
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+      w.accellerate();
+  } else if (keyCode === DOWN_ARROW) {
+      w.decellerate();
+  }
+}
+
+function draw() {
+  background(90);
+  w.update();
+  w.show();
+  p.html("Speed: " + w.velocity.mag());
+}</code></pre>
+
+    <p>
+        Acceleration is straight forward: add the accleration vector to the velocity vector and make sure to limit the
+        velocity vector.  Again, this is a function in the <code>Mover</code> class, I'll go over the 
+        <code>updateDirection()</code> method in a bit.
+    </p>
+    <pre><code class="language-javascript">accellerate() {
+   this.velocity.add(this.acceleration);
+   this.velocity.limit(this.topSpeed);
+   this.updateDirection();
+}</code></pre>
+
+    <p>
+
+    </p>
 
     <script src="./Mover.js"></script>
     <script src="./sketch.js"></script>
+    <script>hljs.highlightAll();</script>
 </body>
 
 </html>

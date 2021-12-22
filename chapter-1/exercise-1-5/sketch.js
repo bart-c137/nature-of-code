@@ -1,6 +1,5 @@
 var w;
 var p;
-var currentHeading;
 
 function setup() {
     let canvas = createCanvas(800, 800);
@@ -13,6 +12,9 @@ function setup() {
 
 }
 
+/**
+ * Check which key is pressed and have the Mover react.
+ */
 function keyPressed() {
     if (keyCode === UP_ARROW) {
         w.accellerate();
