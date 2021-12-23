@@ -36,6 +36,35 @@
     font-weight: bold;
 }
 
+
+/*
+ * COMPUTER MODERN FONT
+ */
+@font-face {
+    font-family: 'Computer Modern';
+    src: url('../cm-font/cmunrm.otf');
+}
+
+@font-face {
+    font-family: 'Computer Modern';
+    src: url('../cm-font/cmunbx.otf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Computer Modern';
+    src: url('../cm-font/cmunti.otf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Computer Modern';
+    src: url('../cm-font/cmunbi.otf');
+    font-weight: bold;
+    font-style: italic;
+}
+
+
 /*
  * MAIN STYLE
  */
@@ -43,7 +72,8 @@ html {
     padding: 0;
     margin: 0;
 
-    font-family: 'Computer Modern Concrete', 'Noto Serif', serif;
+    /* font-family: 'Computer Modern Concrete', 'Noto Serif', serif; */
+    font-family: 'Computer Modern', 'Noto Serif', serif;
     font-size: 18px;
     line-height: 1.5;
 }
@@ -60,6 +90,10 @@ canvas {
 
 code {
     font-family: 'Computer Modern Typewriter', monospace;
+}
+
+p {
+    text-align: justify;
 }
 
 p code {
