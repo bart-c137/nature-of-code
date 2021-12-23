@@ -152,7 +152,7 @@
         After either accelerating or decelerating a call is made to <code>updateDirection</code>.  This is not
         that important when accelerating but it is important during deceleration.  If during deceleration the two
         directions don't match, that means the user is trying to go backwards. When this happens I set the magnitude of
-        the velocity to <cod>stopSpeed</cod>, which is 0.  This basically stops the car but it doesn not prevent the
+        the velocity to <code>stopSpeed</code>, which is 0.  This basically stops the car but it doesn not prevent the
         user from moving backwards if they continue to press the down key because the two directions will match on the
         next key press.  I only decelerate if <code>velocity</code>'s magnitude is greater than 0.  There is no point
         of decelerating if the speed is already at 0.
