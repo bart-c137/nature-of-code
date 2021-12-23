@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="../../p5/p5.min.js"></script>
+    <script src="../../p5/addons/p5.sound.min.js"></script>
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+        integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+        integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+        crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Highlight JS -->
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+    <!-- Main Style-->
+    <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+
+    <title>Exercise 1.5</title>
+</head>
+
+<body>
+    <h1>Exercise 1.5</h1>
+    <p>
+        Create a simulation of a car (or runner) that accelerates when yo press the up key and brakes when you press the
+        down key.
+    </p>
+
+    <div id="canvas"></div>
+    <p id="output"></p>
+    <h1>Solution</h1>
+    <p>
+        A few things to note on how I understand the exercise
+    </p>
+    <ul>
+        <li>
+            The canvas is a simulation with a real worl object in it. In this case I am treating the object like a car.
+        </li>
+        <li>
+            The car can move only in the forward direction and cannot turn or change gears. It can't go into
+            reverse for example or turn left or right.
+        </li>
+        <li>The speed of the car is constant. This means that if no keys are pressed the speed will not change.</li>
+        <li>
+            Pressing the up key increases the speed of the car by a constant value. For example, press the up key once
+            and it adds 1 to the speed. Press it again it will add 1 to the speed again.
+        </li>
+        <li>
+            Pressing the down key has the same effect, but it decreases the speed of the car. The constant to increase
+            and decrease the speed is the same.
+        </li>
+        <li>
+            Remoing all speed means the car is stopped (speed = 0). It is not possible to have a negative speed or to
+            have the car move backwards.
+        </li>
+    </ul>
+    <p>
+        Setting up the environment I created a class <code>Car</code>.  This class represents the object moving in the
+        canvas and follows the rules above. Following OOP practices, I do not want my car to know anything about reading
+        keyboard input; it only knows how to accelerate, decelerate, update itself, and show itself. For that it has 
+        functions <code>accelerate()</code>, <code>decelerate()</code>, <code>update()</code>, and <code>show()</code>. 
+    </p>
+    <pre><code class="language-javascript">class Car {
+  constructor() { /* see above */ }
+
+  accelerate() { }
+
+  decelerate() { }
+
+  update() { }
+
+  show() { }
+}</code></pre>
+    <p>
+        The car has vectors <code>location</code> to track the current locaiton, <code>velocity</code> to track the
+        speed, and <code>acceleration</code> to add and remove speed. I also added a top speed so the car can't go out
+        of control, and a stop speed.  The stop speed is 0 and I'll explain later why it's needed.  I am also keeping
+        track of what direction the car is moving, more on that later. 
+    </p>
+    <pre><code class="language-javascript">constructor() {
+  this.location = createVector(width / 2, height / 2);
+  this.velocity = createVector(0, 0);
+  this.acceleration = createVector(0, -0.1);
+
+  this.topSpeed = 10;
+  this.stopSpeed = 0;
+
+  this.direction = "";
+  this.oldDirection = "";
+}</code></pre>
+
+    <p>
+        One of my rules is the car cannot go backwards, but what does that mean in this simulation?  The 
+        <code>velocity</code> vector starts at 0 and the <code>acceleration</code> vector is changing
+        only the y direction.  So when <code>acceleration</code> is added to <code>velocity</code>, the only change
+        will be to <code>velocity</code>'s y value. The <code>acceleration</code> adds a negative value to
+        <code>velocity</code> and in p5js this is moving from bottom of the canvas to the top. In this simulation, 
+        <em>adding acceleration to velocity will move the car up the canvas</em>; this is the forward direction.
+        Subtracting <code>acceleration</code> from <code>velocity</code> will move the car down the canvas; this is the
+        backwoard direction. However, <code>acceleration</code> is a constant, so it may take multiple decelerations to
+        actually move down the screen.  For example, let's say the user pressed the up key 5 times. The values in the 
+        <code>velocity</code> vector are &lt;0, -0.5&gt; and the car is moving up the screen. Now the user presses the
+        down key once, the <code>velocity</code> vector is now &lt;0, -0.4&gt;, still moving up the screen (y is still
+        negative). The user will have to press the down key more times than the up key to have the car change 
+        direction. But if the user continues to press the down key, the car will move faster and faster down the 
+        screen because <code>velocity</code>'s magnitude will continue to get larger and larger (the y value will
+        continue to get larger and larger) just in the wrong direction.  This is not allowed.  The car should come to 
+        a stop if the user presses the down key to a point where the car changes direction from moving up the screen to
+        moving down the screen.
+    </p>
+
+    <p>
+        This is where the <code>direction</code> and <code>oldDirection</code> properties are used.  After either
+        accelerating or decelerating, the car has to check which direction it's heading.  I use <code>heading()</code>
+        function to check the direction of the <code>velocity</code> vector.  <code>oldDirection</code> is the
+        direction <em>prior</em> to the key press and <code>direction</code> is the new direction.  If
+        <code>oldDirection</code> and <code>direction</code> are not the same, it means the car changed direction. This
+        is implemented in the <code>updateDirection()</code> function.
+    </p>
+
+    <pre><code class="language-javascript">updateDirection() {
+  this.oldDirection = this.direction;
+
+  if (this.velocity.heading() > 0) {
+    this.direction = "DOWN";
+  } else {
+    this.direction = "UP";
+  }
+}</code></pre>
+
+    <p>
+        After either accelerating or decelerating a call is made to <code>updateDirection</code>.  This is not
+        that important when accelerating but it is important during deceleration.  If during deceleration the two
+        directions don't match, that means the user is trying to go backwards. When this happens I set the magnitude of
+        the velocity to <cod>stopSpeed</cod>, which is 0.  This basically stops the car but it doesn not prevent the
+        user from moving backwards if they continue to press the down key because the two directions will match on the
+        next key press.  I only decelerate if <code>velocity</code>'s magnitude is greater than 0.  There is no point
+        of decelerating if the speed is already at 0.
+    </p>
+
+    <pre><code class="language-javascript">decelerate() {
+  if (this.velocity.mag() > 0) {
+    this.velocity.sub(this.acceleration);
+    this.updateDirection();
+
+    if (this.direction != this.oldDirection) {
+      this.velocity.setMag(this.stopSpeed);
+    }
+  }
+}</code></pre>
+
+    <p>
+        During acceleration, I add the <code>acceleration</code> vector to <code>velocity</code> and limit the
+        <code>velocity</code> vector to the value in <code>topSpeed</code>. This way the car will not move too quickly.
+    </p>
+
+    <pre><code class="language-javascript">accelerate() {
+  this.velocity.add(this.acceleration);
+  this.velocity.limit(this.topSpeed);
+  this.updateDirection();
+}</code></pre>
+
+    <p>
+        Since the <code>Car</code> does not handle user input, that is done in <code>sketch.js</code>.
+    </p>
+    <pre><code class="language-javascript">var c;
+var p;
+
+function setup() {
+  let canvas = createCanvas(800, 800);
+  canvas.parent("canvas");
+
+  background(90);
+
+  c = new Car();
+  p = select("#output");
+
+}
+
+/**
+ * Check which key is pressed and have the Mover react.
+ */
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    c.accelerate();
+  } else if (keyCode === DOWN_ARROW) {
+    c.decelerate();
+  }
+}
+
+function draw() {
+  background(90);
+  c.update();
+  c.show();
+  p.html("Speed: " + c.velocity.mag());
+}</code></pre>
+
+    <script src="./Mover.js"></script>
+    <script src="./sketch.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+
+</html>
