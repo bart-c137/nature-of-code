@@ -1,8 +1,9 @@
-class Mover {
+class Car {
     constructor() {
         this.location = createVector(width / 2, height / 2);
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, -0.1);
+
         this.topSpeed = 10;
         this.stopSpeed = 0;
 
@@ -24,13 +25,13 @@ class Mover {
         }
     }
 
-    accellerate() {
+    accelerate() {
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.topSpeed);
         this.updateDirection();
     }
 
-    decellerate() {
+    decelerate() {
         if (this.velocity.mag() > 0) {
             this.velocity.sub(this.acceleration);
             this.updateDirection();

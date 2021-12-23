@@ -1,4 +1,4 @@
-var w;
+var c;
 var p;
 
 function setup() {
@@ -7,7 +7,7 @@ function setup() {
 
     background(90);
 
-    w = new Mover();
+    c = new Car();
     p = select("#output");
 
 }
@@ -17,15 +17,15 @@ function setup() {
  */
 function keyPressed() {
     if (keyCode === UP_ARROW) {
-        w.accellerate();
+        c.accelerate();
     } else if (keyCode === DOWN_ARROW) {
-        w.decellerate();
+        c.decelerate();
     }
 }
 
 function draw() {
     background(90);
-    w.update();
-    w.show();
-    p.html("Speed: " + w.velocity.mag());
+    c.update();
+    c.show();
+    p.html("Speed: " + c.velocity.mag());
 }
