@@ -1,3 +1,9 @@
+/**
+ * The Computer Modern fonts are really great and match the KaTeX library fonts but they do not read well on the
+ * screen, or atleast they don't to me.  I am leaving them in the CSS file so I can experiment later but will replace
+ * them with something that looks nicer on the screen.
+ **/
+
 /*
  * COMPUTER MODERN CONCRETE FONT
  */
@@ -71,17 +77,22 @@
 html {
     padding: 0;
     margin: 0;
-
-    /* font-family: 'Computer Modern Concrete', 'Noto Serif', serif; */
-    font-family: 'Computer Modern', 'Noto Serif', serif;
-    font-size: 18px;
-    line-height: 1.5;
 }
 
 body {
     margin-left: auto;
     margin-right: auto;
     width: 960px;
+
+    font-family: 'Noto Serif', serif;
+    font-size: 18px;
+    line-height: 1.5;
+
+    text-align: justify;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Sans', sans-serif;
 }
 
 canvas {
@@ -89,11 +100,8 @@ canvas {
 }
 
 code {
-    font-family: 'Computer Modern Typewriter', monospace;
-}
-
-p {
-    text-align: justify;
+    /* font-family: 'Computer Modern Typewriter', monospace; */
+    font-family: 'Noto Sans Mono', monospace;
 }
 
 p code {
