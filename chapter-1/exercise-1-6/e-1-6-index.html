@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="../../p5/p5.min.js"></script>
+    <script src="../../p5/addons/p5.sound.min.js"></script>
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+        integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+        integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+        crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Highlight JS -->
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+    <!-- Main Style-->
+    <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+
+    <title>Exercise 1.6</title>
+</head>
+
+<body>
+    <h1>Exercise 1.6</h1>
+    <p>
+        Referring back to the Introduction (see page 17), implement acceleration according to Perlin noise.
+    </p>
+
+    <div id="canvas"></div>
+    <p id="output"></p>
+    <h1>Solution</h1>
+    <p>
+        I decided to use the one dimensional <code>noise()</code> method to get the random values. The
+        <code>p5.Vecotr.random2D()</code> call does not take any arguments so it cannot be used to generate the vector
+        based on Perlin noise.
+    </p>
+    <p>
+        I am making making a call to <code>noise()</code> for the x, y, and magnitude value so the constructor must
+        initialize the noise offsets for each of those.  I also set the top speed to 5.
+    </p>
+
+    <pre><code class="language-javascript">constructor() {
+  this.location = createVector(width / 2, height / 2);
+  this.velocity = createVector(0, 0);
+  this.acceleration = createVector(0, -0.1);
+
+  this.topSpeed = 5;
+
+  this.tx = 0;        // offset for x direction
+  this.ty = 10000;    // offset for y direction
+  this.tm = 20000;    // offset for magnitude
+}</code></pre>
+
+    <p>
+        In the <code>update()</code> call, I use the offsets to get a new random value from the <code>noise()</code>
+        function.  For the x and y value, however, I map it from -1 to 1, this is so the acceleration can be in any
+        direction.  There is no need to do that for the magnitude.
+    </p>
+
+    <pre><code class="language-javascript">let rx = map(noise(this.tx), 0, 1, -1, 1);  // random x direction
+let ry = map(noise(this.ty), 0, 1, -1, 1);  // random y direction
+let rm = noise(this.tm);                    // random magnitude
+        
+this.tx += 0.01;
+this.ty += 0.01;
+this.tm += 0.01;
+
+this.acceleration = createVector(rx, ry);
+this.acceleration.mult(rm);</code></pre>
+
+    <p>
+        The rest is the same, add the acceleration vector to the velocity vector, limit the velocity magnitude to the
+        top speed, add the velocity vector to the location vector.
+    </p>
+
+    <script src="./Mover.js"></script>
+    <script src="./sketch.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+
+</html>
