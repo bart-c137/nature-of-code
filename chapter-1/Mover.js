@@ -8,8 +8,11 @@ class Mover {
     }
 
     update() {
+        this.acceleration = p5.Vector.random2D();
+        this.acceleration.mult(random(2));
+
         this.velocity.add(this.acceleration);
-        this.velocity.limit(10);
+        this.velocity.limit(this.topSpeed);
         this.location.add(this.velocity);
 
         let p = select("#output");
