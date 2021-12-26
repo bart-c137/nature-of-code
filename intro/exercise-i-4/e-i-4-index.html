@@ -23,7 +23,8 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
     rel="stylesheet">
 
   <!-- Highlight JS -->
@@ -41,9 +42,9 @@
 <body>
   <h1>Exercise I.4</h1>
   <p>
-    Consider a simulation of paint splatter drawn as a collection of colored dots.  Most of the paint clusters around
-    a central location, but some dots do splatter out towards the edges.  Can you use a normal distribution of random
-    numbers to generate the locations of the dots?  Can you also use a normal distribution of random numbers to
+    Consider a simulation of paint splatter drawn as a collection of colored dots. Most of the paint clusters around
+    a central location, but some dots do splatter out towards the edges. Can you use a normal distribution of random
+    numbers to generate the locations of the dots? Can you also use a normal distribution of random numbers to
     generate the color palette?
   </p>
 
@@ -52,11 +53,11 @@
   <h1>Solution</h1>
   <p>
     This problem is asking for a normal distribution of points along the X and Y axis and the solution is to address
-    each axis independantly.  For the X axis, the mean is the middle of the canvas, calculated as
-    <code>width / 2</code>.  For the standarad deviation, I wanted to have 4 standard deviations visible on the canvas,
-    this can be calculated as <code>width / 8</code>.  The division is by 8 because there is a total of 8 standard
-    deviations on the canvas, 4 on each side of the mean.  It is now possible to get the Gaussian random number with
-    <code>randomGaussian(mean, standardDeviation)</code> to use as the x value.  This same exact process is done for
+    each axis independantly. For the X axis, the mean is the middle of the canvas, calculated as
+    <code>width / 2</code>. For the standarad deviation, I wanted to have 4 standard deviations visible on the canvas,
+    this can be calculated as <code>width / 8</code>. The division is by 8 because there is a total of 8 standard
+    deviations on the canvas, 4 on each side of the mean. It is now possible to get the Gaussian random number with
+    <code>randomGaussian(mean, standardDeviation)</code> to use as the x value. This same exact process is done for
     the y value.
   </p>
 
@@ -76,8 +77,8 @@
 
   <p>
     For a normalized color palette, I created a function <code>randomColorValue</code> which will return a normalized
-    value between 0 and 255.  I am using the RGB color format and will call this function 3 times: once for the red
-    value, once for the green, and once for the blue.  I used 127.5 as the mean (255 / 2) and wanted 8 standarad
+    value between 0 and 255. I am using the RGB color format and will call this function 3 times: once for the red
+    value, once for the green, and once for the blue. I used 127.5 as the mean (255 / 2) and wanted 8 standarad
     deviations so divided by 8 again.
   </p>
   <pre><code class="language-javascript">randomColorValue() {

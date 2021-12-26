@@ -23,7 +23,8 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
     rel="stylesheet">
 
   <!-- Highlight JS -->
@@ -49,7 +50,7 @@
   <div id="canvas"></div>
 
   <p>
-    I decided to convert the basic random walker from Figure I.1 with 8 possible step directions.  There are 2 basic
+    I decided to convert the basic random walker from Figure I.1 with 8 possible step directions. There are 2 basic
     changes to the original example
   </p>
 
@@ -67,12 +68,12 @@
 }</code></pre>
 
   <p>
-    Converting the step to a <code>PVecotr</code> is also not difficult.  The random values picked in the example code
-    can be used directly to create the vector, in my case named <code>velocity</code>.  The random picking of the x and
-    y values means the <code>velocity</code> vector is also random.  Now <code>velocity</code> can be added to
+    Converting the step to a <code>PVecotr</code> is also not difficult. The random values picked in the example code
+    can be used directly to create the vector, in my case named <code>velocity</code>. The random picking of the x and
+    y values means the <code>velocity</code> vector is also random. Now <code>velocity</code> can be added to
     <code>location</code>.
   </p>
-  
+
 
   <pre><code class="language-javascript">update() {
   let x = int(random(0, 3)) - 1;
@@ -81,7 +82,7 @@
   let velocity = createVector(x, y);
 
   this.location.add(velocity);
-}</code></pre>  
+}</code></pre>
 
   <p>
     Drawing the pint is just pulling the x and y values from the <code>location</code> vector.
