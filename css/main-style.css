@@ -100,8 +100,8 @@ canvas {
 }
 
 code {
-    /* font-family: 'Computer Modern Typewriter', monospace; */
     font-family: 'Noto Sans Mono', monospace;
+    font-size: 0.9em;
 }
 
 p code {
