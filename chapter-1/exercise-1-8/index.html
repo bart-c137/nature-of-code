@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="../../p5/p5.min.js"></script>
+    <script src="../../p5/addons/p5.sound.min.js"></script>
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+        integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+        integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+        crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Highlight JS -->
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+    <!-- Main Style-->
+    <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+
+    <title>Exercise 1.8</title>
+</head>
+
+<body>
+    <h1>Exercise 1.8</h1>
+    <p>
+        Try implementing the above example with a variable magnitude of acceleration, strong when it is eitehr closer
+        further away.
+    </p>
+
+    <div id="canvas"></div>
+    <p id="output"></p>
+
+    <h1>Solution</h1>
+    <p>
+        I decided to try and simulate gravity, but there is no mass involved here so I am going to use an exponential
+        decay formula
+        $$
+        y=a\left(1-b\right)^{x}
+        $$
+        In this solution, \(y\) is the magnitude that will be calculated and applied to the <code>acceleration</code>
+        vector, \(a\) is the maximum speed allowed, \(b\) is the rate of decay, and \(x\) is the distance from the
+        mouse. I have set thhe maximum speed to 5 and the rate of decay to 0.05 so the formula implemented is
+        $$
+        magnitude=5\left(1-0.05\right)^{distance}
+        $$
+        The goal of the simulation is as the object gets closer to the mouse, the magnitude will get larger creating a
+        strong attraction (gravity) to the mouse. As the object gets further away from the mouse, the magnitude will 
+        get smaller creating a much smaller attraction.
+    </p>
+    <p>
+        I created a new function <code>exponentialDecay()</code> which accepts 1 parameter, <code>distance</code>, and
+        implemented the formula above.
+    </p>
+
+    <pre><code class="language-javascript">exponentialDecay (distance) {
+  let mag = this.topSpeed * Math.pow(1 - this.decay, distance);
+  return mag;
+}</code></pre>
+
+    <p>
+        Using the example provided by the author, the distance between the mouse and the object is calculated by the
+        <code>direction</code> vector; it's the <code>direction</code>'s magnitude.  I pass the 
+        <code>direction</code>'s magnitude to the <code>exponentialDecay()</code> function to calculate the magnitude
+        to use and save it in a variable <code>gravity</code>.  The <code>direction</code> vector must be normalized
+        then multiplied by <code>gravity</code>.
+    </p>
+
+    <pre><code class="language-javascript">update() {
+  let mouse = createVector(mouseX, mouseY);
+  let direction = p5.Vector.sub(mouse, this.location);
+
+  let gravity = this.exponentialDecay(direction.mag());
+  direction.normalize();
+  direction.mult(gravity);
+
+  this.acceleration = direction;
+       
+  this.velocity.add(this.acceleration);
+  this.velocity.limit(this.topSpeed);
+  this.location.add(this.velocity);
+
+  let p = select("#output");
+  p.html(this.acceleration.mag());
+}</code></pre>
+
+    <p>
+        The rest of the code is the same as the exmaple.
+    </p>
+    <p>
+        At the start you may have to move the mouse slowly towards the object but you will see it start to get pulled
+        towards the mouse.  You can also see the magnitude of the <code>acceleration</code> vector change by looking at
+        the number below the canvas.
+    </p>
+    <script src="./Mover.js"></script>
+    <script src="./sketch.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+
+</html>
