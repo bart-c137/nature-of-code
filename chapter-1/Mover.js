@@ -4,13 +4,18 @@ class Mover {
         this.velocity = createVector(0, 0);
 
         this.acceleration = createVector(-0.001, 0.01);
-        this.topSpeed = 10;
+        this.topSpeed = 5;
     }
 
     update() {
-        this.acceleration = p5.Vector.random2D();
-        this.acceleration.mult(random(2));
+        let mouse = createVector(mouseX, mouseY);
+        let direction = p5.Vector.sub(mouse, this.location);
 
+        direction.normalize();
+        direction.mult(0.5);
+
+        this.acceleration = direction;
+        
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.topSpeed);
         this.location.add(this.velocity);
