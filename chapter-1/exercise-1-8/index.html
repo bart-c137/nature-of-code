@@ -64,8 +64,15 @@
         magnitude=5\left(1-0.05\right)^{distance}
         $$
         The goal of the simulation is as the object gets closer to the mouse, the magnitude will get larger creating a
-        strong attraction (gravity) to the mouse. As the object gets further away from the mouse, the magnitude will 
-        get smaller creating a much smaller attraction.
+        strong attraction (gravity) to the mouse. As the object gets further away from the mouse, the magnitude will
+        get smaller creating a much smaller attraction. Below is an image of this funciton with the x-axis being the
+        distance to the mouse and the y-axis is the resulting magnitude.
+    </p>
+    <p>
+    <figure>
+        <img width="800" src="./img/decay-function.png" alt="The decay function" />
+        <figcaption>The decay function used for the exercise.</figcaption>
+    </figure>
     </p>
     <p>
         I created a new function <code>exponentialDecay()</code> which accepts 1 parameter, <code>distance</code>, and
@@ -79,9 +86,9 @@
 
     <p>
         Using the example provided by the author, the distance between the mouse and the object is calculated by the
-        <code>direction</code> vector; it's the <code>direction</code>'s magnitude.  I pass the 
+        <code>direction</code> vector; it's the <code>direction</code>'s magnitude. I pass the
         <code>direction</code>'s magnitude to the <code>exponentialDecay()</code> function to calculate the magnitude
-        to use and save it in a variable <code>gravity</code>.  The <code>direction</code> vector must be normalized
+        to use and save it in a variable <code>gravity</code>. The <code>direction</code> vector must be normalized
         then multiplied by <code>gravity</code>.
     </p>
 
@@ -108,7 +115,7 @@
     </p>
     <p>
         At the start you may have to move the mouse slowly towards the object but you will see it start to get pulled
-        towards the mouse.  You can also see the magnitude of the <code>acceleration</code> vector change by looking at
+        towards the mouse. You can also see the magnitude of the <code>acceleration</code> vector change by looking at
         the number below the canvas.
     </p>
     <script src="./Mover.js"></script>
