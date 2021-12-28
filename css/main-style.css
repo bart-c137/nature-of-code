@@ -111,3 +111,8 @@ p code {
 li code {
     color: #d63384;
 }
+
+figcaption {
+    font-style: italic;
+    font-size: 0.85em;
+}
