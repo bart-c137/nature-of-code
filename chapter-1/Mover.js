@@ -1,9 +1,9 @@
 class Mover {
     constructor() {
-        this.location = createVector(width / 2, height / 2);
+        this.location = createVector(random(width), random(height));
         this.velocity = createVector(0, 0);
 
-        this.acceleration = createVector(-0.001, 0.01);
+        this.acceleration = createVector(0, 0);
         this.topSpeed = 5;
     }
 
