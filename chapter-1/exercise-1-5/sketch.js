@@ -5,7 +5,7 @@ function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
 
-    background(90);
+    background('#dfdfdf');
 
     c = new Car();
     p = select("#output");
@@ -24,7 +24,7 @@ function keyPressed() {
 }
 
 function draw() {
-    background(90);
+    background('#dfdfdf');
     c.update();
     c.show();
     p.html("Speed: " + c.velocity.mag());
