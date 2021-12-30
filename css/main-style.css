@@ -116,3 +116,25 @@ figcaption {
     font-style: italic;
     font-size: 0.85em;
 }
+
+/*
+ * Breadcrumb Navigation
+ */
+ul.breadcrumb {
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eeeeee;
+
+    font-family: 'Noto Sans', sans-serif;
+}
+
+ul.breadcrumb li {
+    display: inline;
+    font-size: 18px;
+}
+
+ul.breadcrumb li+li::before {
+    padding: 8px;
+    color: #000000;
+    content: "/\00a0";
+}

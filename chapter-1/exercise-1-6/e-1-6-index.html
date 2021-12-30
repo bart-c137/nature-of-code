@@ -41,6 +41,12 @@
 </head>
 
 <body>
+    <ul class="breadcrumb">
+        <li><a href="../../index.html">Index</a></li>
+        <li><a href="../index.html">Chapter 1</a></li>
+        <li>Exercise 1.6</li>
+    </ul>
+
     <h1>Exercise 1.6</h1>
     <p>
         Referring back to the Introduction (see page 17), implement acceleration according to Perlin noise.
@@ -56,7 +62,7 @@
     </p>
     <p>
         I am making making a call to <code>noise()</code> for the x, y, and magnitude value so the constructor must
-        initialize the noise offsets for each of those.  I also set the top speed to 5.
+        initialize the noise offsets for each of those. I also set the top speed to 5.
     </p>
 
     <pre><code class="language-javascript">constructor() {
@@ -73,8 +79,8 @@
 
     <p>
         In the <code>update()</code> call, I use the offsets to get a new random value from the <code>noise()</code>
-        function.  For the x and y value, however, I map it from -1 to 1, this is so the acceleration can be in any
-        direction.  There is no need to do that for the magnitude.
+        function. For the x and y value, however, I map it from -1 to 1, this is so the acceleration can be in any
+        direction. There is no need to do that for the magnitude.
     </p>
 
     <pre><code class="language-javascript">let rx = map(noise(this.tx), 0, 1, -1, 1);  // random x direction
