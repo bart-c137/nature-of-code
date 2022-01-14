@@ -1,9 +1,5 @@
 var balloon;
 
-function mousePressed() {
-    balloon.float();
-}
-
 function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
