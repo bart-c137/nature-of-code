@@ -49,15 +49,227 @@
 
     <h1>Exercise 2.1</h1>
     <p>
-        Using forces, simulate a helium-filled baloon floating upward and bouncing off the top of
+        Using forces, simulate a helium-filled balloon floating upward and bouncing off the top of
         a window.  Can you add a wind force that changes over time, perhaps according to Perlin
         noise?
     </p>
 
     <div id="canvas"></div>
-    <p id="output"></p>
+    <p>
+        HOLD the mouse to apply a wind force.
+    </p>
 
     <h1>Solution</h1>
+    <p>
+        I struggled with this one, partially due to not understanding P5 very well.  I looked at the author's solution
+        to see where I was going wrong and I'll explain what my mistake was at the end.
+    </p>
+
+    <p>
+        I wanted this to be based off of reality so 
+    </p>
+    <ul>
+        <li>The canvas is a room with walls and cieling.</li>
+        <li>The bottom of the canvas is the ground and the top is a cieling.</li>
+        <li>The balloon needs to float slowly from the ground to the cieling but not past the cieling.</li>
+        <li>The balloon should bounce once it hits the cieling, then float up again.</li>
+    </ul>
+
+    <p>
+        Started off with a <code>Balloon</code> class with vectors <code>location</code>, <code>velocity</code>, and
+        <code>acceleration</code>.  I also added the maximim velocity the balloon an rise and set it to 2.  There is no
+        reason for that, I just liked that speed.  I also added methods <code>applyForce(force)</code> to apply an 
+        external force to the balloon, <code>checkEdges()</code> to determine when the balloon hits the sides and top of
+        the room, <code>update()</code> to apply the forces onto the balloon, and <code>display()</code> to draw the
+        balloon on the screen.  The balloon starts at the bottom of the floor in the middle of the room.  The
+        <code>display()</code> method is the same as last few examples, an ellipse.
+    </p>
+
+    <pre><code class="language-javascript">class Balloon {
+  constructor() {
+    this.location = createVector(width / 2, height);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0)
+
+    this.maxRiseVelocity = 2;
+  }
+
+  applyForce(force) {
+  }
+
+  checkEdges() {
+  }
+
+  update() {
+  }
+
+  display() {
+    stroke(0);
+    fill(175);
+    ellipse(this.location.x, this.location.y, 16, 16);
+  }
+}</code></pre>
+
+    <p>
+        The <code>applyForce(force)</code> method takes a Vector as a parameter and adds it to the 
+        <code>acceleration</code>, <em>it does not apply it to the velocity or location</em>.
+    </p>
+
+    <pre><code class="language-javascript">applyForce(force) {
+  this.acceleration.add(force);
+}</code></pre>
+
+    <p>
+        The <code>update()</code> method follows the rule set by the author: acceleration updates velocity and velocity
+        updates the location.  The important thing is to reset <code>acceleration</code> after the updates otherwise
+        the next time a force is applied the forces compound.  By resetting the acceleration the behavior is much like
+        a push.
+    </p>
+
+    <pre><code class="language-javascript">update() {
+  this.velocity.add(this.acceleration);
+  this.velocity.limit(this.maxRiseVelocity);
+  this.location.add(this.velocity);
+
+  this.acceleration.mult(0);
+}</code></pre>
+
+    <p>
+        Checking edges is where the bouncing behavior occurrs.  Checking the cieling hit, if <code>location.y</code> is
+        <em>less than</em> 0, the balloon has hit the cieling.  The <code>location.y</code> is set to 0, and
+        <code>velocity.y</code> is reversed.  Reversing the velocity is what simulates the "bounce."  However, this
+        will make the balloon float back down towards the floor at the same speed at which it hit the cieling, which is
+        not realistic.  I divide <code>velocity</code> by 2 to make it more realistic.  There is no logic why 2, it 
+        just looks believable.  When checkign for hitting the walls, if <code>location.x</code> is less than 0, the
+        balloon has hit the left wall and needs to bounce back.  If <code>location.x</code> is greater than
+        <code>width</code>, the balloon has hit the right wall and needs to bounce back.  In both cases, it's enough to
+        reverse <code>velocity</code>, it still behaves realistically.  On both sides of the wall, the
+        <code>location.x</code> value is set to either 0 or <code>width</code> to keep the balloon from going off the
+        canvas.
+    </p>
+
+    <pre><code class="language-javascript">checkEdges() {
+  if (this.location.y &lt; 0) {
+    this.location.y = 0;
+    this.velocity.y *= -1;
+    this.velocity.div(2);
+  }
+
+  if (this.location.x &lt; 0) {
+    this.location.x = 0;
+    this.velocity.x *= -1;
+  } else if (this.location.x &gt; width) {
+    this.location.x = width;
+    this.velocity.x *= -1;
+  }
+}</code></pre>
+
+    <p>
+        All this does not do anything because there are no forces applied to the balloon.  This is where I struggled.
+        <code>sketch.js</code> is behaving as the real world in this example and it is responsible for applying the
+        forces onto the balloon.  To start off I create variables <code>balloon</code>, <code>heliumRiseForce</code>,
+        and <code>windIncrement</code> as global variables.  <code>balloon</code> is the <code>Balloon</code> object
+        described up to now, <code>heliumRiseForce</code> is the vector to simulate how fast the balloon should float
+        up, and <code>windIncrement</code> is a counter to move through the <code>noise()</code> function.  I than have
+        functions <code>getWindForce()</code> to get the wind vector, <code>setup()</code>, and <code>draw()</code>.
+    </p>
+
+    <pre><code class="language-javascript">var balloon;
+var heliumRiseForce;
+var windIncrement = 0;
+
+function getWindForce() {
+}
+
+function setup() {
+  let canvas = createCanvas(800, 800);
+  canvas.parent("canvas");
+  balloon = new Balloon();
+
+  heliumRiseForce = createVector(0, -0.05);
+}
+
+function draw() {
+    background('#dfdfdf');
+}</code></pre>
+
+    <p>
+        Note the <code>heliumRiseForce.y</code> is -0.05.  Just like with values in this example, I just like the speed
+        the balloon travels at this value.  Before getting to the wind, I want to apply the helium rise to the balloon.
+        This is done in the <code>draw()</code> function: apply the force, update the balloon, check the edges, and
+        finally display the balloon.
+    </p>
+
+    <pre><code class="language-javascript">function draw() {
+  background('#dfdfdf');
+
+  balloon.applyForce(heliumRiseForce);
+
+  balloon.update();
+  balloon.checkEdges();
+  balloon.display();
+}</code></pre>
+
+    <p>
+        This works perfectly to have the balloon hit the ceiling and bounce back.  As a plus it bounces a smaller
+        amount each time it hits which looks very realistic.  So now the wind, and this is another place where I 
+        struggled. First, I want the wind applied <strong><em>while</em></strong> the user is 
+        <strong><em>holding</em></strong> the mouse button and it should be a gentle push, not a massive shove.  The
+        <code>getWindForce()</code> function uses the <code>windIncrement</code> variable to move through the
+        <code>noise()</code> function and maps the noise value to somewhere between -1 and 1. A new vector is created
+        using the mapped value in the x direction.
+    </p>
+
+    <pre><code class="language-javascript">function getWindForce() {
+  let xDirection = map(noise(windIncrement), 0, 1, -1, 1);
+  return createVector(xDirection, 0);
+}</code></pre>
+
+    <p>
+        This generates the wind but now it has to be applied.  This happes in the <code>draw()</code> function along
+        with the <code>heliumRiseForce</code>.  I use the <code>mouseIsPressed</code> variable to check if the mouse is
+        pressed, and if it is, I call <code>getWindForce()</code> to create a new wind vector apply it to the balloon,
+        and increment the <code>windIncrement</code> to get a new value for wind next time.
+    </p>
+
+    <pre><code class="language-javascript">function draw() {
+  background('#dfdfdf');
+
+  balloon.applyForce(heliumRiseForce);
+
+  if (mouseIsPressed) {
+    let wind = getWindForce();
+    balloon.applyForce(wind);
+    windIncrement += 0.1;
+  }
+
+  balloon.update();
+  balloon.checkEdges();
+  balloon.display();
+}</code></pre>
+
+    <p>
+        This completes the exercise.  The section below is me explaining where I went wrong as a beginner.
+    </p>
+
+    <h2>What I Did Wrong</h2>
+    <p>
+        As I said, I am new to P5 so the drawing loop is still foriegn to me.  I actually go the balloon to float to
+        the top and stop without any help, but I could not get the bounce.  To me, I felt like the balloon was 
+        responsible for its own rise so I had the rising force within the balloon.  But this meant I had no way to
+        modify it from outside the balloon. I knew I had to reverse the velocity, but how do I get the balloon to rise 
+        again?  Because the balloon was doing everything, rising, bouncing, checking edges, I didn't understand how to 
+        have the drawing loop could be used to move the balloon in different directions by applying a force in the same
+        direction.
+    </p>
+
+    <p>
+        When I saw the author was using <code>sketch.js</code> to apply the force to move the balloon, it all made 
+        sense. The draw loop is the physics engine in this example, it applies the rising force and the wind.  So once
+        the balloon hits the ceiling and reverses direction, the <code>draw()</code> function will apply the rising
+        force so the balloon will slow downa and rise again.  I also didn't know about the <code>mouseIsPressed</code>
+        variable, I was trying to use the <code>mousePressed()</code> event which wasn't helping.
+    </p>
 
     <script src="./balloon.js"></script>
     <script src="./sketch.js"></script>

@@ -3,6 +3,8 @@ class Balloon {
         this.location = createVector(width / 2, height);
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, 0)
+
+        this.maxRiseVelocity = 2;
     }
 
     applyForce(force) {
@@ -27,6 +29,7 @@ class Balloon {
 
     update() {
         this.velocity.add(this.acceleration);
+        this.velocity.limit(this.maxRiseVelocity);
         this.location.add(this.velocity);
 
         this.acceleration.mult(0);
