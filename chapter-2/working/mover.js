@@ -1,8 +1,8 @@
 class Mover {
-    constructor() {
-        this.mass = 1;
+    constructor(mass, xLocation, yLocation) {
+        this.mass = mass;
 
-        this.location = createVector(width / 2, 30);
+        this.location = createVector(xLocation, yLocation);
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, 0)
         
@@ -37,6 +37,6 @@ class Mover {
     display() {
         stroke(0);
         fill(175);
-        ellipse(this.location.x, this.location.y, 48, 48);
+        ellipse(this.location.x, this.location.y, this.mass * 16, this.mass * 16);
     }
 }
