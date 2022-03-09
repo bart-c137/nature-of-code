@@ -5,12 +5,21 @@ class Mover {
         this.location = createVector(xLocation, yLocation);
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, 0)
-        
+
+        this.pushingForce = createVector(5, 0);
     }
 
     applyForce(force) {
         var f = p5.Vector.div(force, this.mass);
         this.acceleration.add(f);
+    }
+
+    distanceToWall() {
+        if (this.velocity.x < 0) {
+            return this.location.x * -1;
+        } else if (this.velocity.x > 0) {
+            return width - this.location.x;
+        }
     }
 
     checkEdges() {
