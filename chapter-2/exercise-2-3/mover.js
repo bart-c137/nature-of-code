@@ -5,8 +5,6 @@ class Mover {
         this.location = createVector(xLocation, yLocation);
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, 0)
-
-        this.pushingForce = createVector(5, 0);
     }
 
     applyForce(force) {
