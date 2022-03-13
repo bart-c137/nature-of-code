@@ -138,3 +138,20 @@ ul.breadcrumb li+li::before {
     color: #000000;
     content: "/\00a0";
 }
+
+table, thead, tbody, tfoot, tr, th, td {
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    border-bottom: 3px solid #666666;
+}
+
+td {
+    border-bottom:1px solid #cccccc;
+    padding: 3px;
+}
