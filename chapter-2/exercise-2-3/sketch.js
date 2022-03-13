@@ -1,58 +1,51 @@
-// var movers;
-var mover;
+var movers;
+// var mover;
 var p;
 
 function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
-    // movers = new Array(100);
-    mover = new Mover(random(0.1, 5), 0, 0);
+    movers = new Array(100);
+    // mover = new Mover(random(0.1, 5), random(0, width), random(0, height));
 
-    // for (let i = 0; i < movers.length; i++) {
-    //     movers[i] = new Mover(random(0.1, 5), 0, 0);
-    // }
+    for (let i = 0; i < movers.length; i++) {
+        movers[i] = new Mover(random(0.1, 5), random(0, width), random(0, height));
+    }
 
     p = select("#output");
-}
-
-function exponentialDecay(distance) {
-    let mag = 30 * Math.pow(1 - 0.01, distance);
-    return mag;
 }
 
 function draw() {
     background('#dfdfdf');
 
-    let wind = createVector(0.1, 0);
+    let leftWind = createVector(0.01, 0);
     let gravity = createVector(0, 0.1);
 
-    // for (let i = 0; i < movers.length; i++) {
-    //     movers[i].applyForce(wind);
-    //     movers[i].applyForce(gravity);
-    //     movers[i].update();
-    //     movers[i].display();
-    //     movers[i].checkEdges();
-    // }
-
-    let d = mover.distanceToWall();
-
-    mover.applyForce(wind);
-    mover.applyForce(gravity);
-
-    if(abs(d) <= 500) {
-        let magnitude = exponentialDecay(abs(d));
-        console.log("Distance: " + d + "  Velocity: " + mover.velocity.x + "  Mag: " + magnitude);
-
-        if (d > 0) {
-            magnitude *= -1;
-        }
-        let pushForce = createVector(magnitude, 0);
-        mover.applyForce(pushForce);
+    for (let i = 0; i < movers.length; i++) {
+        let xNorm = movers[i].location.x / width;
+        let yNorm = movers[i].location.y / height;
+        let edgeForce = createVector(0.5 - xNorm, 0.5 - yNorm);
+        
+        movers[i].applyForce(edgeForce);
+        movers[i].applyForce(leftWind);
+        movers[i].applyForce(gravity);
+        movers[i].update();
+        movers[i].display();
+        movers[i].checkEdges();
     }
 
-    mover.update();
-    mover.display();
-    mover.checkEdges();
+    // let xNorm = mover.location.x / width;
+    // let yNorm = mover.location.y / height;
+    // let edgeForce = createVector(0.5 - xNorm, 0.5 - yNorm);
 
-    p.html("Velocity: " + mover.velocity.x + "<br />Distance: " + d);
+    // mover.applyForce(edgeForce);
+
+    // mover.applyForce(leftWind);
+    // mover.applyForce(gravity);
+
+    // mover.update();
+    // mover.display();
+    // mover.checkEdges();
+
+    // p.html("Velocity: " + mover.velocity.x + "<br />Distance: " + d);
 }
