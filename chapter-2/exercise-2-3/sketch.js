@@ -1,5 +1,4 @@
 var movers;
-var p;
 
 /**
  * Returns the force value for a location based on how close it is to the specified edge dimension.
