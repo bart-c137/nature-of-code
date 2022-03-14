@@ -62,7 +62,37 @@
     </p>
     <p>
         To me, the hardest part of this exercise was determining how to scale the force with how close the object is to
-        the wall.  The other difficult part was determining which direction the object was moving.
+        the wall.  The other difficult part was determining which direction the object was moving.  I tried to do this
+        on my own for a few days not making a lot of progress and eventually came acros 
+        <a href="https://observablehq.com/@ajur/the-nature-of-code-2-forces" target="_blank">this page</a> by Adam
+        Jurczyk.  In Adam's solution there is a use of the formulas
+    </p>
+
+    <pre>xNorm = location.x / width;
+yNorm = location.y / height;</pre>
+
+    <p>
+        Adam than subtracts these values from 0.5 for the force vector to apply
+    </p>
+
+    <pre>createVector(0.5 - xNorm, 0.5 - yNorm);</pre>
+
+    <p>
+        I didn't understand this at first until I realized what is going on.  In short, the formulas convert the object
+        location from the canvas location to a value between 0 and 1 (almost like a percentage). For example, if the
+        <code>width</code> is 800 and <code>location.x</code> is 643, <code>xNorm</code> is calculated as 643 / 800 
+        which is 0.80375; about 80% of the way across the canvas.  If the value is greater than 0.5, the object is
+        closer to the right edge than the left and needs a negative force in the x direction.  That's why the value is
+        subtracted from 0.5. Using the same example again 0.5 - 0.80375 = -0.30375; a negative value.  When the force
+        is created with this value it will push the object to the left. In short, the formulas normalize the location 
+        and the subtraction from 0.5 automatically creates a force in the right direction. It also scales with how 
+        close the object is to the edges. The values closer to the edges will have a higher value after the subtraction
+        versus the values closer to the middle.
+    </p>
+
+    <p>
+        But this is a linear scale and I want an exponential scale.  
+    </p>
 
     <script src="./mover.js"></script>
     <script src="./sketch.js"></script>
