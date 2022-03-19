@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="../../p5/p5.min.js"></script>
+    <script src="../../p5/addons/p5.sound.min.js"></script>
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+        integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+        integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+        crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+        integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Highlight JS -->
+    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
+    <link rel="stylesheet"
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+    <!-- Main Style-->
+    <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+
+    <title>Exercise 2.3</title>
+</head>
+
+<body>
+    <ul class="breadcrumb">
+        <li><a href="../../index.html">Index</a></li>
+        <li><a href="../index.html">Chapter 2</a></li>
+        <li>Exercise 2.2</li>
+    </ul>
+
+    <h1>Exercise 2.3</h1>
+    <p>
+        Instead of objects bouncing off the edges of the wall, create an example in which an invisible force pushes
+        back on the objects to keep them in the window. Can you weight the force according to how far the object is
+        from an edge-i.e., the close it is, the stronger the force?
+    </p>
+
+    <div id="canvas"></div>
+
+    <h1>Solution</h1>
+    <p>
+        <em>I do not know if this solution is correct</em>.  I am getting the behavior I expect but I'm not sure for
+        some reason this is what the author intended.  Also, see <a href="#p_struggle">the struggle</a> for an
+        overview of the difficulties I had with this.  I actually looked up how others have done this and then used
+        that as inspiration for my solution.
+    </p>
+
+    <p>
+        I wanted a solution where the force applied to the object scaled exponentially with how close the object is to
+        the wall. To me this meant exponential decay using the formula
+        $$
+        y = a\left(1-b\right)^x
+        $$
+        where \(y\) is the magnitude of the force applied to the object, \(a\) is the maximum magnitude allowed, \(b\)
+        is the rate of decay, and \(x\) is the distance away from the wall. The values I chose for \(a\) and \(b\) are
+        5 and 0.025 so the formula I am using is
+        $$
+        y = 5\left(1-0.025\right)^x
+        $$
+        This produces the curve shown below.
+    </p>
+    <p>
+    <figure>
+        <img width="800" src="./img/decay-function.png" alt="The decay function" />
+        <figcaption>The decay function used for the exercise.</figcaption>
+    </figure>
+    </p>
+
+    <p>
+        As the object gets closer to the wall (0 in the graph above) the force calculated by the function gets larger,
+        up to 5.
+    </p>
+
+    <p>
+        I wanted this behavior when the object approached all 4 edges and the force has to be applied in the proper
+        direction. To determine which direction the force needs to be applied, I decided to split the canvas dimension
+        in two.
+    </p>
+
+    <ul>
+        <li>The area to the left of the middle would get a positive force</li>
+        <li>The area to the right of the middle would get a negative force</li>
+    </ul>
+
+    <p>
+        The illustration below demonstrates what I mean. There is no need to know the direction the object is moving
+        and applying the opposite force. Instead, determine where the object is in relation to where you want it to be
+        and apply a force to get it there.  I want the objects to be pushed to the middle, so anything to the left of
+        middle needs a positive force to move it right, and anything right of middle needs a negative force to move it
+        left.  In the illustration below, the canvas is 800 by 800, so the middle is 400.
+    </p>
+
+    <p>
+    <figure>
+        <img width="800" src="./img/force-direction.svg" alt="The force directions" />
+        <figcaption>The force is applied based on where the object is, rather than where it is traveling.</figcaption>
+    </figure>
+    </p>
+    
+    <p>
+        This approach works in both the x and y direction and can be generalized.  I created a function
+        <code>exponentialDecay()</code> to accept an object's location and the size of the canvas which returns the
+        magnitude of the force to apply.
+    </p>
+
+    <pre><code class="language-javascript">/**
+* Returns the force value for a location based on how close it is to the specified edge 
+* dimension.
+* 
+* @param {number} location - The location to calculate the force for.
+* @param {number} edge - The maximum value for the edge to check.
+* @returns {number} A number representing the strength of the force to apply.
+*/
+function exponentailDecay(location, edge) {
+  let dNorm = 0;
+  let direction = 1;
+
+  if (location &lt;= edge / 2) {
+    // the location is to the left of the middle, the location is how close it os to the edge
+    dNorm = location;
+  } else {
+    // the location is to the right of the middle, calculate how close it is to the edge by 
+    // subtracting from the edge value
+    dNorm = edge - location;
+
+    // the returning force must push to the left
+    direction = -1;
+ }
+
+ // using random values for the starting and decay values.
+ let force = 5 * Math.pow(1 - 0.025, dNorm)
+ return force * direction;
+}</code></pre>
+
+    <p>
+        The variable <code>dNorm</code> is the distance from the edge to the object and <code>direction</code> will be
+        used to switch the direction of the force.  When the location is to the left of the middle
+    </p>
+    
+    <pre><code class="language-javascript">if (location &lt;= edge / 2)</code></pre>
+    
+    <p>
+        Than the location itself is how close the object is to the edge because the edge is at 0.  But when the
+        location is greater than the middle, to get the distance (<code>dNorm</code>) subtract the object's location
+        from the edge.  Since the force has to push back to the middle and the object is to the right, the
+        <code>direction</code> is set to -1 so the force can be reversed before the function exits.
+    </p>
+
+    <p>
+        A call to the <code>exponentailDecay()</code> function needs to be done for both the x and y parts of the force
+        vector and the returned values are used to create the force.  The force is applied along with the wind and
+        gravity like in the example.  This is all in sketch.js.      
+    </p>
+
+    <pre><code class="language-javascript">function draw() {
+  background('#dfdfdf');
+
+  let leftWind = createVector(0.01, 0);
+  let gravity = createVector(0, 0.1);
+
+  for (let i = 0; i &lt; movers.length; i++) {
+    let xForce = exponentailDecay(movers[i].location.x, width);
+    let yForce = exponentailDecay(movers[i].location.y, height);
+    let edgeForce = createVector(xForce, yForce);
+
+    movers[i].applyForce(edgeForce);
+    movers[i].applyForce(leftWind);
+    movers[i].applyForce(gravity);
+    movers[i].update();
+    movers[i].display();
+  }
+}</code></pre>
+
+    <p>
+        I also changed how the objects are created.  The object's mass, x location, and y location are randomized so
+        they all start at a random location.
+    </p>
+
+    <pre><code class="language-javascript">function setup() {
+  let canvas = createCanvas(800, 800);
+  canvas.parent("canvas");
+
+  movers = new Array(100);
+
+  for (let i = 0; i < movers.length; i++) {
+    movers[i] = new Mover(random(0.1, 5), random(0, width), random(0, height));
+  }
+
+  p = select("#output");
+}</code></pre>
+
+    <p>
+        To prove out this works, I also removed the <code>checkEdges()</code> call and even removed the function from
+        the <code>Mover</code> class.
+    </p>
+
+    <h1 id="p_struggle">The Struggle</h1>
+    <p>
+        To me, the hardest part of this exercise was determining how to scale the force with how close the object is to
+        the wall. The other difficult part was determining which direction the object was moving. I tried to do this
+        on my own for a few days not making a lot of progress and eventually came acros
+        <a href="https://observablehq.com/@ajur/the-nature-of-code-2-forces" target="_blank">this page</a> by Adam
+        Jurczyk. In Adam's solution there is a use of the formulas
+    </p>
+
+    <pre>xNorm = location.x / width;
+yNorm = location.y / height;</pre>
+
+    <p>
+        Adam than subtracts these values from 0.5 for the force vector to apply
+    </p>
+
+    <pre>createVector(0.5 - xNorm, 0.5 - yNorm);</pre>
+
+    <p>
+        I didn't understand this at first until I realized what is going on. In short, the formulas convert the object
+        location from the canvas location to a value between 0 and 1 (almost like a percentage). For example, if the
+        <code>width</code> is 800 and <code>location.x</code> is 643, <code>xNorm</code> is calculated as 643 / 800
+        which is 0.80375; about 80% of the way across the canvas. If the value is greater than 0.5, the object is
+        closer to the right edge than the left and needs a negative force in the x direction. That's why the value is
+        subtracted from 0.5. Using the same example again 0.5 - 0.80375 = -0.30375; a negative value. When the force
+        is created with this value it will push the object to the left. In short, the formulas normalize the location
+        and the subtraction from 0.5 automatically creates a force in the right direction. It also scales with how
+        close the object is to the edges. The values closer to the edges will have a higher value after the subtraction
+        versus the values closer to the middle.
+    </p>
+
+    <p>
+        But this is a linear scale and I want an exponential scale, that's why I didn't use this.  Instead the
+        realization that it's more important to know where the object is rather than where it's going is what I took
+        from Adam's solution and applied it to my formula.
+    </p>
+
+    <script src="./mover.js"></script>
+    <script src="./sketch.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+
+</html>
