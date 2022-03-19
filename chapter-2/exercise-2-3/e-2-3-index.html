@@ -58,7 +58,10 @@
 
     <h1>Solution</h1>
     <p>
-        <em>I do not know if this solution is correct</em>.
+        <em>I do not know if this solution is correct</em>.  I am getting the behavior I expect but I'm not sure for
+        some reason this is what the author intended.  Also, see <a href="#p_struggle">the struggle</a> for an
+        overview of the difficulties I had with this.  I actually looked up how others have done this and then used
+        that as inspiration for my solution.
     </p>
 
     <p>
@@ -114,10 +117,6 @@
     </p>
     
     <p>
-        
-    </p>
-
-    <p>
         This approach works in both the x and y direction and can be generalized.  I created a function
         <code>exponentialDecay()</code> to accept an object's location and the size of the canvas which returns the
         magnitude of the force to apply.
@@ -135,7 +134,7 @@ function exponentailDecay(location, edge) {
   let dNorm = 0;
   let direction = 1;
 
-  if (location &le; edge / 2) {
+  if (location &lt;= edge / 2) {
     // the location is to the left of the middle, the location is how close it os to the edge
     dNorm = location;
   } else {
@@ -153,9 +152,68 @@ function exponentailDecay(location, edge) {
 }</code></pre>
 
     <p>
-        When the location is to the left of the middle, the location itself is how close the object is to the edge
-        because the edge is at 0.
+        The variable <code>dNorm</code> is the distance from the edge to the object and <code>direction</code> will be
+        used to switch the direction of the force.  When the location is to the left of the middle
     </p>
+    
+    <pre><code class="language-javascript">if (location &lt;= edge / 2)</code></pre>
+    
+    <p>
+        Than the location itself is how close the object is to the edge because the edge is at 0.  But when the
+        location is greater than the middle, to get the distance (<code>dNorm</code>) subtract the object's location
+        from the edge.  Since the force has to push back to the middle and the object is to the right, the
+        <code>direction</code> is set to -1 so the force can be reversed before the function exits.
+    </p>
+
+    <p>
+        A call to the <code>exponentailDecay()</code> function needs to be done for both the x and y parts of the force
+        vector and the returned values are used to create the force.  The force is applied along with the wind and
+        gravity like in the example.  This is all in sketch.js.      
+    </p>
+
+    <pre><code class="language-javascript">function draw() {
+  background('#dfdfdf');
+
+  let leftWind = createVector(0.01, 0);
+  let gravity = createVector(0, 0.1);
+
+  for (let i = 0; i &lt; movers.length; i++) {
+    let xForce = exponentailDecay(movers[i].location.x, width);
+    let yForce = exponentailDecay(movers[i].location.y, height);
+    let edgeForce = createVector(xForce, yForce);
+
+    movers[i].applyForce(edgeForce);
+    movers[i].applyForce(leftWind);
+    movers[i].applyForce(gravity);
+    movers[i].update();
+    movers[i].display();
+  }
+}</code></pre>
+
+    <p>
+        I also changed how the objects are created.  The object's mass, x location, and y location are randomized so
+        they all start at a random location.
+    </p>
+
+    <pre><code class="language-javascript">function setup() {
+  let canvas = createCanvas(800, 800);
+  canvas.parent("canvas");
+
+  movers = new Array(100);
+
+  for (let i = 0; i < movers.length; i++) {
+    movers[i] = new Mover(random(0.1, 5), random(0, width), random(0, height));
+  }
+
+  p = select("#output");
+}</code></pre>
+
+    <p>
+        To prove out this works, I also removed the <code>checkEdges()</code> call and even removed the function from
+        the <code>Mover</code> class.
+    </p>
+
+    <h1 id="p_struggle">The Struggle</h1>
     <p>
         To me, the hardest part of this exercise was determining how to scale the force with how close the object is to
         the wall. The other difficult part was determining which direction the object was moving. I tried to do this
@@ -187,7 +245,9 @@ yNorm = location.y / height;</pre>
     </p>
 
     <p>
-        But this is a linear scale and I want an exponential scale.
+        But this is a linear scale and I want an exponential scale, that's why I didn't use this.  Instead the
+        realization that it's more important to know where the object is rather than where it's going is what I took
+        from Adam's solution and applied it to my formula.
     </p>
 
     <script src="./mover.js"></script>
