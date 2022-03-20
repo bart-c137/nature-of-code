@@ -155,3 +155,15 @@ td {
     border-bottom:1px solid #cccccc;
     padding: 3px;
 }
+
+/* Copied directly from Bootstrap */
+p.warning {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
