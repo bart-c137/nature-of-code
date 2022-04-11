@@ -70,6 +70,49 @@
     font-style: italic;
 }
 
+/*
+ * LINUX LIBERTING FONT
+ */
+@font-face {
+    font-family: 'Linux Libertine';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinLibertine_R.woff');
+}
+
+@font-face {
+    font-family: 'Linux Libertine';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinLibertine_RB.woff');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Linux Libertine';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinLibertine_RBI.woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Linux Libertine';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinLibertine_RI.woff');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Linux Biolinum';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinBiolinum_R.woff');
+}
+
+@font-face {
+    font-family: 'Linux Biolinum';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinBiolinum_RB.woff');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Linux Biolinum';
+    src: url('../LinLibertineWOFF_5.3.0_2012_07_02/LinBiolinum_RI.woff');
+    font-style: italic;
+}
 
 /*
  * MAIN STYLE
@@ -84,15 +127,20 @@ body {
     margin-right: auto;
     width: 960px;
 
-    font-family: 'Noto Serif', serif;
+    font-family: 'Linux Libertine', 'Noto Serif', serif;
     font-size: 16px;
     line-height: 1.5;
 
     text-align: justify;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Noto Sans', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Linux Biolinum', 'Noto Sans', sans-serif;
 }
 
 canvas {
@@ -125,7 +173,7 @@ ul.breadcrumb {
     list-style: none;
     background-color: #eeeeee;
 
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Linux Biolinum', 'Noto Sans', sans-serif;
 }
 
 ul.breadcrumb li {
@@ -139,7 +187,13 @@ ul.breadcrumb li+li::before {
     content: "/\00a0";
 }
 
-table, thead, tbody, tfoot, tr, th, td {
+table,
+thead,
+tbody,
+tfoot,
+tr,
+th,
+td {
     border-collapse: collapse;
 }
 
@@ -152,7 +206,7 @@ th {
 }
 
 td {
-    border-bottom:1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
     padding: 3px;
 }
 
