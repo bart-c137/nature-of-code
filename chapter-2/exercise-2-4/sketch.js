@@ -1,61 +1,52 @@
-var movers;
+var mover;
+var speedUpZoneStart = 160;
+var speedUpZoneStop = 320;
+var slowDownZoneStart = 460;
+var slowDownZoneStop = 640;
 
-/**
- * Returns the force value for a location based on how close it is to the specified edge dimension.
- * 
- * @param {number} location - The location to calculate the force for.
- * @param {number} edge - The maximum value for the edge to check.
- * @returns {number} A number representing the strength of the force to apply.
- */
-function exponentailDecay(location, edge) {
-    let dNorm = 0;
-    let direction = 1;
+var slowDownFrictionCoefficient = 0.05;
+var speedUpFrictionCoefficient = 0.1;
 
-    if (location < edge / 2) {
-        // the location is to the left of the middle, the location is how close it os to the edge
-        dNorm = location;
-    } else {
-        // the location is to the right of the middle, calculate how close it is to the edge by subtracting from the
-        // edge value
-        dNorm = edge - location;
-
-        // the returning force must push to the left
-        direction = -1;
-    }
-
-    // using random values for the starting and decay values.
-    let force = 5 * Math.pow(1 - 0.025, dNorm)
-    return force * direction;
-}
+var p;
 
 function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
 
-    movers = new Array(100);
-
-    for (let i = 0; i < movers.length; i++) {
-        movers[i] = new Mover(random(0.1, 5), random(0, width), random(0, height));
-    }
+    mover = new Mover(random(0, speedUpZoneStart), random(0, height));
 
     p = select("#output");
 }
 
 function draw() {
     background('#dfdfdf');
+    stroke(0);
+    line(160, 0, 160, 800);
+    line(320, 0, 320, 800);
+    line(480, 0, 480, 800);
+    line(640, 0, 640, 800);
 
-    let leftWind = createVector(0.01, 0);
-    let gravity = createVector(0, 0.1);
+    let friction = mover.velocity.copy();
+    friction.normalize();
 
-    for (let i = 0; i < movers.length; i++) {
-        let xForce = exponentailDecay(movers[i].location.x, width);
-        let yForce = exponentailDecay(movers[i].location.y, height);
-        let edgeForce = createVector(xForce, yForce);
+    let inZone = false;
 
-        movers[i].applyForce(edgeForce);
-        movers[i].applyForce(leftWind);
-        movers[i].applyForce(gravity);
-        movers[i].update();
-        movers[i].display();
+    if (mover.location.x >= speedUpZoneStart && mover.location.x < speedUpZoneStop) {
+        inZone = true;
+        friction.mult(speedUpFrictionCoefficient);
+    } else if (mover.location.x >= slowDownZoneStart && mover.location.x < slowDownZoneStop) {
+        inZone = true;
+        friction.mult(-1);
+        friction.mult(slowDownFrictionCoefficient);
     }
+
+    if (inZone) {
+        mover.applyForce(friction);
+    }
+
+    mover.update();
+    mover.display();
+    mover.checkEdges();
+
+    p.html("Speed: " + mover.velocity.mag());
 }

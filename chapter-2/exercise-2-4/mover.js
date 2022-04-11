@@ -1,27 +1,34 @@
 class Mover {
-    constructor(mass, xLocation, yLocation) {
-        this.mass = mass;
+    constructor(xLocation, yLocation) {
+        this.initialSpeed = 2;
+        this.maxSpeed = 10;
 
         this.location = createVector(xLocation, yLocation);
-        this.velocity = createVector(0, 0);
+        this.velocity = createVector(this.initialSpeed, 0);
         this.acceleration = createVector(0, 0)
     }
 
     applyForce(force) {
-        var f = p5.Vector.div(force, this.mass);
-        this.acceleration.add(f);
+        this.acceleration.add(force);
     }
 
-    distanceToWall() {
-        if (this.velocity.x < 0) {
-            return this.location.x * -1;
-        } else if (this.velocity.x > 0) {
-            return width - this.location.x;
+    checkEdges() {
+        if(this.location.y < 0) {
+            this.location.y = 0;
+            this.velocity.y *= -1;
+        }
+
+        if (this.location.x < 0) {
+            this.location.x = 0;
+            this.velocity.x *= -1;
+        } else if (this.location.x > width) {
+            this.location.x = 0;
         }
     }
 
     update() {
         this.velocity.add(this.acceleration);
+        this.velocity.limit(this.maxSpeed);
         this.location.add(this.velocity);
         this.acceleration.mult(0);
     }
@@ -29,6 +36,6 @@ class Mover {
     display() {
         stroke(0);
         fill(175);
-        ellipse(this.location.x, this.location.y, this.mass * 16, this.mass * 16);
+        ellipse(this.location.x, this.location.y, 16, 16);
     }
 }
