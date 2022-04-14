@@ -61,6 +61,73 @@
     <div id="canvas"></div>
     <p id="output"></p>
 
+    <p>
+        This was not bad, just some modifications from the previous examples.  For my solution I wanted to have one
+        object move from left to right across the canvas either speeding up or slowing down as it came across some
+        parts of the canvas.  The areas that increased speed are colored in green and areas that slow down are colored
+        red.  In my solution the speed zones are vertical strips on the canvas going from top to bottom.
+    </p>
+
+    <p>
+        First, for the <code>Mover</code> class, I added class variables <code>initialSpeed</code> and 
+        <code>maxSpeed</code> to start the object with some speed and to keep it from going too quickly.  The
+        <code>location</code>, <code>velocity</code>, and <code>acceleration</code> vectors remain as is.
+    </p>
+
+    <pre><code class="language-javascript">constructor(xLocation, yLocation) {
+  this.initialSpeed = 2;
+  this.maxSpeed = 10;
+
+  this.location = createVector(xLocation, yLocation);
+  this.velocity = createVector(this.initialSpeed, 0);
+  this.acceleration = createVector(0, 0)
+}</code></pre>
+
+    <p>
+        I modified the <code>checkEdgets()</code> method so when the object reaches the right edge of the canvas it
+        "wraps" around back to the left side.
+    </p>
+
+    <pre><code class="language-javascript">checkEdges() {
+  if (this.location.y &lt;= 0) {
+    this.location.y = 0;
+    this.velocity.y *= -1;
+  }
+
+  if (this.location.x &lt;= 0) {
+    this.location.x = 0;
+    this.velocity.x *= -1;
+  } else if (this.location.x &gt; width) {
+    // object is at the right side, wrap it back to the left side
+    // do not change direction
+    this.location.x = 0;
+  }
+}</code></pre>
+
+    <p>
+        I removed gravity for this exercise as well so the <code>applyForce()</code> method only applies the force, it
+        does not worry about mass.
+    </p>
+
+    <pre><code class="language-javascript">applyForce(force) {
+  this.acceleration.add(force);
+}</code></pre>
+
+    <p>
+        I also removed mass from the <code>ellipse()</code> function call in the <code>display()</code> function.  
+        Everything else in the <code>Mover</code> class is the same.
+    </p>
+
+    <p>
+        In the <code>sketch.js</code> file, there are globals that are needed
+    </p>
+
+    <ul>
+        <li><code>mover</code> the object that is moving across the screen.</li>
+        <li><code>speedUpZoneStart</code> where the speed up zone starts.</li>
+        <li><code>speedUpZoneStop</code> where the speed up zone ends.</li>
+        <li></li>
+    </ul>
 
     <script src="./mover.js"></script>
     <script src="./sketch.js"></script>
