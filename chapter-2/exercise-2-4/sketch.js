@@ -16,15 +16,16 @@ function setup() {
     mover = new Mover(random(0, speedUpZoneStart), random(0, height));
 
     p = select("#output");
+
 }
 
 function draw() {
     background('#dfdfdf');
-    stroke(0);
-    line(160, 0, 160, 800);
-    line(320, 0, 320, 800);
-    line(480, 0, 480, 800);
-    line(640, 0, 640, 800);
+    noStroke();
+    fill("#AFE1AF");
+    rect(160, 0, 160, 800);
+    fill("#F88379");
+    rect(460, 0, 160, 800);
 
     let friction = mover.velocity.copy();
     friction.normalize();
@@ -48,5 +49,5 @@ function draw() {
     mover.display();
     mover.checkEdges();
 
-    p.html("Speed: " + mover.velocity.mag());
+    p.html("Speed: " + mover.velocity.mag().toFixed(2));
 }
