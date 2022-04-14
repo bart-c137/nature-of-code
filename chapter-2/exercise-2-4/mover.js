@@ -13,7 +13,7 @@ class Mover {
     }
 
     checkEdges() {
-        if(this.location.y < 0) {
+        if (this.location.y < 0) {
             this.location.y = 0;
             this.velocity.y *= -1;
         }
@@ -22,6 +22,8 @@ class Mover {
             this.location.x = 0;
             this.velocity.x *= -1;
         } else if (this.location.x > width) {
+            // object is at the right side, wrap it back to the left side
+            // do not change direction
             this.location.x = 0;
         }
     }
