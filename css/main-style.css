@@ -145,6 +145,8 @@ h6 {
 
 canvas {
     display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 code {
@@ -163,6 +165,10 @@ li code {
 figcaption {
     font-style: italic;
     font-size: 0.85em;
+}
+
+pre code {
+    border-radius: 0.25rem;
 }
 
 /*
@@ -220,4 +226,16 @@ p.warning {
     color: #664d03;
     background-color: #fff3cd;
     border-color: #ffecb5;
+}
+
+p#output {
+    font-family: 'Noto Sans Mono', monospace;
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #41464b;
+    background-color: #e2e3e5;
+    border-color: #d3d6d8;
 }
