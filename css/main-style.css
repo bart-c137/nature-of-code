@@ -167,6 +167,10 @@ figcaption {
     font-size: 0.85em;
 }
 
+pre code {
+    border-radius: 0.25rem;
+}
+
 /*
  * Breadcrumb Navigation
  */
