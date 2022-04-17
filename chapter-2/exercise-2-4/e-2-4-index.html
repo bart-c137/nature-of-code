@@ -62,15 +62,15 @@
     <p id="output"></p>
 
     <p>
-        This was not bad, just some modifications from the previous examples.  For my solution I wanted to have one
+        This was not bad, just some modifications from the previous examples. For my solution I wanted to have one
         object move from left to right across the canvas either speeding up or slowing down as it came across some
-        parts of the canvas.  The areas that increased speed are colored in green and areas that slow down are colored
-        red.  In my solution the speed zones are vertical strips on the canvas going from top to bottom.
+        parts of the canvas. The areas that increased speed are colored in green and areas that slow down are colored
+        red. In my solution the speed zones are vertical strips on the canvas going from top to bottom.
     </p>
 
     <p>
-        First, for the <code>Mover</code> class, I added class variables <code>initialSpeed</code> and 
-        <code>maxSpeed</code> to start the object with some speed and to keep it from going too quickly.  The
+        First, for the <code>Mover</code> class, I added class variables <code>initialSpeed</code> and
+        <code>maxSpeed</code> to start the object with some speed and to keep it from going too quickly. The
         <code>location</code>, <code>velocity</code>, and <code>acceleration</code> vectors remain as is.
     </p>
 
@@ -114,7 +114,7 @@
 }</code></pre>
 
     <p>
-        I also removed mass from the <code>ellipse()</code> function call in the <code>display()</code> function.  
+        I also removed mass from the <code>ellipse()</code> function call in the <code>display()</code> function.
         Everything else in the <code>Mover</code> class is the same.
     </p>
 
@@ -126,8 +126,96 @@
         <li><code>mover</code> the object that is moving across the screen.</li>
         <li><code>speedUpZoneStart</code> where the speed up zone starts.</li>
         <li><code>speedUpZoneStop</code> where the speed up zone ends.</li>
-        <li></li>
+        <li><code>slowDownZoneStart</code> where the slow down zone starts.</li>
+        <li><code>slowDownZoneStop</code> where the slow down zone stops.</li>
+        <li><code>slowDownFrictionCoefficient</code> the friction coefficient for the slow down zone.</li>
+        <li><code>speedUpFrictionCoefficient</code> the friction coefficient for the speed up zone.</li>
     </ul>
+
+    <p>
+        There is only one object in this simulation and I had it start at a location between the left edge and the
+        start of the speed up zone.
+    </p>
+
+    <pre><code class="language-javascript">var mover;
+var speedUpZoneStart = 160;
+var speedUpZoneStop = 320;
+var slowDownZoneStart = 460;
+var slowDownZoneStop = 640;
+
+var slowDownFrictionCoefficient = 0.05;
+var speedUpFrictionCoefficient = 0.1;
+
+var p;
+
+function setup() {
+  let canvas = createCanvas(800, 800);
+  canvas.parent("canvas");
+
+  mover = new Mover(random(0, speedUpZoneStart), random(0, height));
+
+  p = select("#output");
+}</code></pre>
+
+    <p>
+        In the <code>draw()</code> function first thing to do is to draw the spee up and speed down zones.
+    </p>
+
+    <pre><code class="language-javascript">background('#dfdfdf');
+noStroke();
+fill("#AFE1AF");
+rect(160, 0, 160, 800);
+fill("#F88379");
+rect(460, 0, 160, 800);</code></pre>
+
+    <p>
+        Now the object's velocity vector can be used to get the friction vector and normalize it.
+    </p>
+
+    <pre><code class="language-javascript">let friction = mover.velocity.copy();
+friction.normalize();</code></pre>
+
+    <p>
+        In my similation I want the friction to be applied only when the object is in either of the two zones. My
+        preferred approach is to start with the assumption that it is not in either zone, check if it is, and apply the
+        friction force only if it is. One thing to keep in mind is when the object is in the speed up zone, the
+        friction force should not be the oppposite of velocity, it needs to be in the same direction. The rest of the
+        code is mostly the same as other examples, use the <code>applyForce()</code> method to add the friction and
+        call the <code>update()</code>, <code>display()</code>, <code>checkEdges()</code> methods.
+    </p>
+
+    <pre><code class="language-javascript">function draw() {
+  background('#dfdfdf');
+  noStroke();
+  fill("#AFE1AF");
+  rect(160, 0, 160, 800);
+  fill("#F88379");
+  rect(460, 0, 160, 800);
+
+  let friction = mover.velocity.copy();
+  friction.normalize();
+
+  let inZone = false;
+
+  if (mover.location.x >= speedUpZoneStart && mover.location.x < speedUpZoneStop) {
+    inZone = true;
+    friction.mult(speedUpFrictionCoefficient);
+  } else if (mover.location.x >= slowDownZoneStart && mover.location.x < slowDownZoneStop) {
+    inZone = true;
+    friction.mult(-1);
+    friction.mult(slowDownFrictionCoefficient);
+  }
+
+  if (inZone) {
+    mover.applyForce(friction);
+  }
+
+  mover.update();
+  mover.display();
+  mover.checkEdges();
+
+  p.html("Speed: " + mover.velocity.mag().toFixed(2));
+}</code></pre>
 
     <script src="./mover.js"></script>
     <script src="./sketch.js"></script>
