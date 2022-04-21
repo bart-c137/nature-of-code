@@ -23,12 +23,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
 
     <!-- Highlight JS -->
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
     <link rel="stylesheet"
         href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
@@ -59,9 +56,9 @@
 
     <h1>Solution</h1>
     <p class="warning">
-        <em>I do not know if this solution is correct</em>.  I am getting the behavior I expect but I'm not sure for
-        some reason this is what the author intended.  Also, see <a href="#p_struggle">the struggle</a> for an
-        overview of the difficulties I had with this.  I actually looked up how others have done this and then used
+        <em>I do not know if this solution is correct</em>. I am getting the behavior I expect but I'm not sure for
+        some reason this is what the author intended. Also, see <a href="#p_struggle">the struggle</a> for an
+        overview of the difficulties I had with this. I actually looked up how others have done this and then used
         that as inspiration for my solution.
     </p>
 
@@ -105,9 +102,9 @@
     <p>
         The illustration below demonstrates what I mean. There is no need to know the direction the object is moving
         and applying the opposite force. Instead, determine where the object is in relation to where you want it to be
-        and apply a force to get it there.  I want the objects to be pushed to the middle, so anything to the left of
+        and apply a force to get it there. I want the objects to be pushed to the middle, so anything to the left of
         middle needs a positive force to move it right, and anything right of middle needs a negative force to move it
-        left.  In the illustration below, the canvas is 800 by 800, so the middle is 400.
+        left. In the illustration below, the canvas is 800 by 800, so the middle is 400.
     </p>
 
     <p>
@@ -116,9 +113,9 @@
         <figcaption>The force is applied based on where the object is, rather than where it is traveling.</figcaption>
     </figure>
     </p>
-    
+
     <p>
-        This approach works in both the x and y direction and can be generalized.  I created a function
+        This approach works in both the x and y direction and can be generalized. I created a function
         <code>exponentialDecay()</code> to accept an object's location and the size of the canvas which returns the
         magnitude of the force to apply.
     </p>
@@ -154,22 +151,22 @@ function exponentailDecay(location, edge) {
 
     <p>
         The variable <code>dNorm</code> is the distance from the edge to the object and <code>direction</code> will be
-        used to switch the direction of the force.  When the location is to the left of the middle
+        used to switch the direction of the force. When the location is to the left of the middle
     </p>
-    
+
     <pre><code class="language-javascript">if (location &lt;= edge / 2)</code></pre>
-    
+
     <p>
-        Than the location itself is how close the object is to the edge because the edge is at 0.  But when the
+        Than the location itself is how close the object is to the edge because the edge is at 0. But when the
         location is greater than the middle, to get the distance (<code>dNorm</code>) subtract the object's location
-        from the edge.  Since the force has to push back to the middle and the object is to the right, the
+        from the edge. Since the force has to push back to the middle and the object is to the right, the
         <code>direction</code> is set to -1 so the force can be reversed before the function exits.
     </p>
 
     <p>
         A call to the <code>exponentailDecay()</code> function needs to be done for both the x and y parts of the force
-        vector and the returned values are used to create the force.  The force is applied along with the wind and
-        gravity like in the example.  This is all in sketch.js.      
+        vector and the returned values are used to create the force. The force is applied along with the wind and
+        gravity like in the example. This is all in sketch.js.
     </p>
 
     <pre><code class="language-javascript">function draw() {
@@ -192,7 +189,7 @@ function exponentailDecay(location, edge) {
 }</code></pre>
 
     <p>
-        I also changed how the objects are created.  The object's mass, x location, and y location are randomized so
+        I also changed how the objects are created. The object's mass, x location, and y location are randomized so
         they all start at a random location.
     </p>
 
@@ -246,7 +243,7 @@ yNorm = location.y / height;</pre>
     </p>
 
     <p>
-        But this is a linear scale and I want an exponential scale, that's why I didn't use this.  Instead the
+        But this is a linear scale and I want an exponential scale, that's why I didn't use this. Instead the
         realization that it's more important to know where the object is rather than where it's going is what I took
         from Adam's solution and applied it to my formula.
     </p>

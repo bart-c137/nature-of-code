@@ -23,12 +23,9 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
 
   <!-- Highlight JS -->
-  <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css"> -->
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
 
@@ -50,7 +47,7 @@
   <h1>Exercise I.7</h1>
   <p>
     In the above random walker, the result of the noise function is mapped directly to the <code>Walker</code>&apos;s
-    location.  Create a random walker where you instead map the result of the <code>noise()</code> function to a
+    location. Create a random walker where you instead map the result of the <code>noise()</code> function to a
     <code>Walker</code>&apos;s step size.
   </p>
 
@@ -59,13 +56,13 @@
   <h1>Solution</h1>
   <p>
     I decided to use the <code>noise()</code> function to get just one step value and the <code>random()</code>
-    function to determine the step direction.  Once I know the step direction, I will step in that direction the amount
+    function to determine the step direction. Once I know the step direction, I will step in that direction the amount
     of pixelse determined by the <code>noise()</code> function.
   </p>
   <p>
     For the <code>noise()</code> function I created a parameter named <code>ts</code> (time for step) to move through
-    the noise values generated.  I also created an array <code>direction</code> to hold the different directions for
-    the steps.  The other parameters are needed for the walker with a step.
+    the noise values generated. I also created an array <code>direction</code> to hold the different directions for
+    the steps. The other parameters are needed for the walker with a step.
   </p>
 
   <pre><code class="language-javascript">constructor() {
@@ -83,7 +80,7 @@
     The <code>randomMove()</code> function will accept the step size, determine the direction to move, and change the
     x or y value as needed.
   </p>
-  
+
   <pre><code class="language-javascript">randomMove(stepSize) {
   let direction = random(this.direction);
 
@@ -107,10 +104,10 @@
 
   <p>
     In the <code>update()</code> function I determine the step size from the <code>noise()</code> function and map it
-    to a value between 0 and 10 using the <code>map()</code> function.  This needs to be converted to an int as well.
+    to a value between 0 and 10 using the <code>map()</code> function. This needs to be converted to an int as well.
     The current x and y values need to be stored so a line can be drawn before calling <code>randomMove()</code> since
-    that would alter the current location.  Finally the <code>ts</code> value needs to be moved to get a new value for
-    the noise and I am incrementing by 0.01 like the author.  The <code>show()</code> simply draws a line from the
+    that would alter the current location. Finally the <code>ts</code> value needs to be moved to get a new value for
+    the noise and I am incrementing by 0.01 like the author. The <code>show()</code> simply draws a line from the
     previous x an y to the new x and y.
   </p>
 
