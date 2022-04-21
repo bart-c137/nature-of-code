@@ -11,7 +11,7 @@ body {
     margin-right: auto;
     width: 960px;
 
-    font-family: 'Linux Libertine', 'Noto Serif', serif;
+    font-family: 'Linux Libertine', serif;
     font-size: 16px;
     line-height: 1.5;
 
@@ -24,7 +24,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Linux Biolinum', 'Noto Sans', sans-serif;
+    font-family: 'Linux Biolinum', 'Inconsolata', sans-serif;
 }
 
 canvas {
@@ -33,8 +33,8 @@ canvas {
     margin-right: auto;
 }
 
-code {
-    font-family: 'Noto Sans Mono', monospace;
+pre, code {
+    font-family: 'Inconsolata', monospace;
     font-size: 0.9em;
 }
 
@@ -63,7 +63,7 @@ ul.breadcrumb {
     list-style: none;
     background-color: #eeeeee;
 
-    font-family: 'Linux Biolinum', 'Noto Sans', sans-serif;
+    font-family: 'Linux Biolinum', sans-serif;
 }
 
 ul.breadcrumb li {
@@ -113,7 +113,7 @@ p.warning {
 }
 
 p#output {
-    font-family: 'Noto Sans Mono', monospace;
+    font-family: 'Inconsolata', monospace;
     position: relative;
     padding: 1rem 1rem;
     margin-bottom: 1rem;
