@@ -6,6 +6,10 @@ class Mover {
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, 0)
 
+        this.startX = xLocation;
+        this.startY = yLocation;
+        this.maxDrag = 0;
+        this.maxVelocity = 0;
     }
 
     applyForce(force) {
@@ -29,7 +33,10 @@ class Mover {
     }
 
     isInside(liquid) {
-        if (this.location.x >= liquid.x && this.location.x <= liquid.x + liquid.w && this.location.y >= liquid.y && this.location.y <= liquid.y + liquid.h) {
+        if (this.location.x >= liquid.x 
+            && this.location.x <= liquid.x + liquid.width 
+            && this.location.y >= liquid.y 
+            && this.location.y <= liquid.y + liquid.height) {
             return true;
         } else {
             return false;
@@ -38,7 +45,7 @@ class Mover {
 
     drag(liquid) {
         let speed = this.velocity.mag();
-        let dragMagnitude = liquid.c * speed * speed;
+        let dragMagnitude = liquid.coefficientOfDrag * speed * speed;
 
         let drag = this.velocity.copy();
         drag.mult(-1);
@@ -47,6 +54,8 @@ class Mover {
         drag.mult(dragMagnitude);
 
         this.applyForce(drag);
+
+        return drag;
     }
 
     update() {

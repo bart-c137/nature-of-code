@@ -10,7 +10,7 @@ function setup() {
     movers = new Array(5);
 
     for (let i = 0; i < movers.length; i++) {
-        movers[i] = new Mover(random(0.1, 5), 0, 0);
+        movers[i] = new Mover(random(0.1, 5), i * 40, 0);
     }
 }
 
