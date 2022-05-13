@@ -6,6 +6,8 @@ class Mover {
         this.velocity = createVector(0, 0);
         this.acceleration = createVector(0, 0)
 
+        this.maxSpeed = 10;
+
         this.startX = xLocation;
         this.startY = yLocation;
         this.maxDrag = 0;
@@ -26,8 +28,8 @@ class Mover {
             this.velocity.x *= -1;
         }
 
-        if (this.location.y > height) {
-            this.location.y = height;
+        if (this.location.y > height / 2) {
+            this.location.y = height / 2;
             this.velocity.y *= -1;
         }
     }
@@ -61,6 +63,7 @@ class Mover {
     update() {
         this.velocity.add(this.acceleration);
         this.location.add(this.velocity);
+        this.velocity.limit(this.maxSpeed);
         this.acceleration.mult(0);
     }
 

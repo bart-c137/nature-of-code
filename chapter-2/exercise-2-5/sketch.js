@@ -1,20 +1,29 @@
 var liquid;
 var movers;
 var p;
+var chart;
+var plotData;
+var timerCounter;
+var timer;
 
 function setup() {
-    let canvas = createCanvas(800, 800);
+    let canvas = createCanvas(800, 1600);
     canvas.parent("canvas");
 
-    movers = new Array(10);
+    movers = new Array(1);
 
     for (let i = 0; i < movers.length; i++) {
         movers[i] = new Mover(3, random(10, 700), random(20, 300));
     }
 
-    liquid = new Liquid(0, height / 2, width, height / 2, 0.1);
+    liquid = new Liquid(0, 400, width, 400, 0.1);
+    chart = new Chart(0, 20, 0, 11);
 
     p = select("#output");
+
+    plotData = {};
+    timerCounter = 0;
+    timer = 0;
 }
 
 function draw() {
@@ -26,9 +35,15 @@ function draw() {
         if (movers[i].isInside(liquid)) {
             let dragForce = movers[i].drag(liquid);
 
-            if(dragForce.mag() > movers[i].maxDrag) {
+            if (dragForce.mag() > movers[i].maxDrag) {
                 movers[i].maxDrag = dragForce.mag();
                 movers[i].maxVelocity = movers[i].velocity.mag();
+            }
+
+            if (millis() >= 100 + timer) {
+                timerCounter++;
+                plotData[timerCounter] = dragForce.mag();
+                timer = millis();
             }
         }
 
@@ -44,5 +59,9 @@ function draw() {
         output += "Max Drag: " + movers[i].maxDrag.toFixed(2) + ".  Max Speed: " + movers[i].maxVelocity.toFixed(2) + ".  ";
         output += "Current Speed: " + movers[i].velocity.mag() + "<br />";
         p.html(output);
+
+
+        chart.update(plotData);
+        chart.display();
     }
 }
