@@ -35,9 +35,9 @@ class Mover {
     }
 
     isInside(liquid) {
-        if (this.location.x >= liquid.x 
-            && this.location.x <= liquid.x + liquid.width 
-            && this.location.y >= liquid.y 
+        if (this.location.x >= liquid.x
+            && this.location.x <= liquid.x + liquid.width
+            && this.location.y >= liquid.y
             && this.location.y <= liquid.y + liquid.height) {
             return true;
         } else {

@@ -1,13 +1,5 @@
 class Chart {
-    constructor(minX, maxX, minY, maxY, yOffset, xOffset) {
-        this.minX = minX;
-        this.maxY = maxX;
-        this.minY = minY;
-        this.maxY = maxY;
-
-        this.top = yOffset;
-        this.left = xOffset;
-
+    constructor() {
         this.plotData;
     }
 
