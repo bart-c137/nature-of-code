@@ -32,14 +32,18 @@ function draw() {
 
     let output = "";
     for (let i = 0; i < movers.length; i++) {
+
+        // is the object in the liquid?
         if (movers[i].isInside(liquid)) {
             let dragForce = movers[i].drag(liquid);
 
+            // is the current drag higher
             if (dragForce.mag() > movers[i].maxDrag) {
                 movers[i].maxDrag = dragForce.mag();
                 movers[i].maxVelocity = movers[i].velocity.mag();
             }
 
+            // every 100 milliseconds
             if (millis() >= 100 + timer) {
                 timerCounter++;
                 plotData[timerCounter] = dragForce.mag();
