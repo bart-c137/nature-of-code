@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <script src="../../p5/p5.min.js"></script>
+  <script src="../../p5/addons/p5.sound.min.js"></script>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+    integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+    integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+    crossorigin="anonymous"></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+
+  <!-- Highlight JS -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+  <!-- Main Style-->
+  <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/fonts.css" />
+
+  <title>Exercise 2.5</title>
+</head>
+
+<body>
+  <ul class="breadcrumb">
+    <li><a href="../../index.html">Index</a></li>
+    <li><a href="../index.html">Chapter 2</a></li>
+    <li>Exercise 2.5</li>
+  </ul>
+
+  <h1>Exercise 2.5</h1>
+  <p>
+    Take a look at our formula for drag again: <strong><em>drag force = coefficient * speed * speed</em></strong>.
+    The faster an object moves, the greater the drag force against it. In fact, an object not moving in water
+    experiences no drag at all. Expand the example to drop balls from different heights. How does this affect the
+    drag as they hit the water?
+  </p>
+
+  <h1>Solution</h1>
+
+  <div id="canvas"></div>
+  <p id="output"></p>
+
+  <p class="warning">
+    This simulation uses a JSON object to plot data. The size of this object can get very large if the browser tab
+    stays open. Make sure to pause the simulation at some point.
+  </p>
+
+  <p>
+    I was surprised by the question because I feel the answer is stated in the problem: <em>the faster an object
+      moves, the greater the drag force against it</em>. When an object falls from a higher height, it will gain
+    higher speed; as the speed increases so does the drag. So, thinking I was not understanding, I decided to plot
+    the drag force as the object fell into the water.
+  </p>
+
+  <p>
+    In my mind the starting height, max speed, and max drag force were related and I wanted to capture this
+    information in the <code>Mover</code> object. I added parameters for the starting x and y position, maximim
+    drag force, and maximum velocity achieved during the simulation.
+  </p>
+
+  <pre><code class="language-javascript">constructor(mass, xLocation, yLocation) {
+  this.mass = mass;
+
+  this.location = createVector(xLocation, yLocation);
+  this.velocity = createVector(0, 0);
+  this.acceleration = createVector(0, 0)
+
+  this.maxSpeed = 10;
+
+  this.startX = xLocation;
+  this.startY = yLocation;
+  this.maxDrag = 0;
+  this.maxVelocity = 0;
+}</code></pre>
+
+  <p>
+    The rest of the <code>Mover</code> code is the same as from the example. Note that none of the new parameters
+    are actually updated by the <code>Mover</code> itself. I am using these to store the values calculated by the
+    simulation.
+  </p>
+
+  <p>
+    For the simulation, I want to track how dropping the <em>same</em> object over and over from different heights
+    impacts the drag. I added a few global variables
+  </p>
+
+  <dl>
+    <dt><code>p</code></dt>
+    <dd>The paragraph to print the output to.</dd>
+    <dt><code>plotData</code></dt>
+    <dd>The JSON object that holds the plot information.</dd>
+    <dt><code>timerCounter</code></dt>
+    <dd>The counter to use as the JSON property name for plotting.</dd>
+    <dt><code>timer</code></dt>
+    <dd>The simulation lifetime.</dd>
+  </dl>
+
+  <p>
+    This is on top of the object being dropped and the liquid from the example.
+  </p>
+
+  <h2>Plotting the Data</h2>
+  <p>
+    I originally was just going to print those values but then figured it'd be nice to plot them. The <em>x</em>
+    axis is the time and the <em>y</em> axis is the drag value. The drag starts plotting as soon as the object hits
+    the water, there is no drag prior to that. The correct thing to do is to create a proper <code>Chart</code>
+    object and pass a data series, but instead I just hard coded everything for the chart. The <code>update</code>
+    method requires a JSON object containing the data to plot. This is a simple JSON object though, the parameters
+    are the numbers for the <em>x</em> axis and the parameter values are the drag force. For example
+  </p>
+
+  <pre><code class="language-json">{
+  1: 3.135,
+  2: 0.698,
+  3: 0.445
+}</code></pre>
+
+  <p>
+    Here is the full code for the <code>Chart</code> object. I will eventually redo it properly.
+  </p>
+
+  <pre><code class="language-javascript">class Chart {
+  constructor() {
+    this.plotData;
+  }
+
+  update(plotData) {
+    this.plotData = plotData;
+  }
+
+  displayPlotData() {
+    noFill();
+    beginShape();
+    for (const x in this.plotData) {
+      // x value
+      let xValue = map(x, 0, 60, 20, width);
+
+      // y value
+      let yValue = map(11 - this.plotData[x], 0, 11, 900, 1580);
+
+      ellipse(xValue, yValue, 10, 10);
+      vertex(xValue, yValue);
+    }
+    endShape();
+  }
+
+  display() {
+    // draw x axis
+    line(0, 1580, width, 1580);
+
+    // draw y axis
+    line(20, height, 20, 900);
+
+    // draw y tick marks
+    for (let i = 1; i <= 10; i++) {
+      let y1 = map(i, 0, 11, 900, 1580);
+      line(10, y1, 30, y1);
+    }
+
+    // draw x tick marks
+    for (let i = 0; i <= 60; i++) {
+      let x1 = map(i, 0, 60, 20, width);
+      line(x1, 1590, x1, 1570);
+    }
+
+    this.displayPlotData();
+  }
+}</code></pre>
+
+  <p>
+    So that's the <code>Mover</code> and <code>Chart</code> objects, now onto the <code>sketch.js</code> file. For
+    global variables I defined
+  </p>
+
+  <dl>
+    <dt><code>liquid</code></dt>
+    <dd>Used for the <code>Liquid</code> object. This is the same as what's in the example excep I set the color to
+      <code>#89CFF0</code>.
+    </dd>
+    <dt><code>movers</code></dt>
+    <dd>An array containing <code>Mover</code> objects. This sketch will have only 1 <code>Mover</code> object.</dd>
+    <dt><code>p</code></dt>
+    <dd>The paragraph where the simulation data will be output.</dd>
+    <dt><code>chart</code></dt>
+    <dd>The chart that will plot the data for the simulation.</dd>
+    <dt><code>plotData</code></dt>
+    <dd>The JSON object that will contain the information to plot.</dd>
+    <dt><code>timerCounter</code></dt>
+    <dd>A counter to track how many data points to track.</dd>
+    <dt><code>timer</code></dt>
+    <dd>The number of milliseconds since the simulation started.</dd>
+  </dl>
+
+  <p>
+    In the <code>setup()</code> function, the liquid and chart is set up so the chart is below the liquid. The
+    <code>movers</code> array is initialized with only 1 object that starts at a random x and y location.
+    <code>plotData</code>, <code>timerCounter</code>, and <code>timer</code> are all initialized to 0 or empty.
+  </p>
+
+  <pre><code>function setup() {
+  let canvas = createCanvas(800, 1600);
+  canvas.parent("canvas");
+
+  movers = new Array(1);
+
+  for (let i = 0; i < movers.length; i++) {
+    movers[i] = new Mover(3, random(10, 700), random(20, 300));
+  }
+
+  liquid = new Liquid(0, 400, width, 400, 0.1);
+  chart = new Chart(0, 20, 0, 11);
+
+  p = select("#output");
+
+  plotData = {};
+  timerCounter = 0;
+  timer = 0;
+}</code></pre>
+
+  <p>
+    The maximum drag and maximum speed will occur when the mover object first enters the liquid. At that point both
+    values are captured. Entering the liquid also starts a 100 millisecond timer to capture the drag force. Everytime
+    <code>draw()</code> executes, the following happens
+  </p>
+
+  <ol>
+    <li>Check if the object is in the liquid.</li>
+    <li>
+      If the current maximum drag is larger than the last known maximum drag force, set the current drag force as
+      the maximum.
+    </li>
+    <li>
+      If the current millisecond timer (<code>millis()</code>) is 100 milliseconds larger than last time, capture the
+      current drag force in the <code>plotData</code>.
+    </li>
+    <li>Apply gravity to the object.</li>
+    <li>Update the informaiton to the user.</li>
+  </ol>
+
+  <pre><code>for (let i = 0; i < movers.length; i++) {
+
+  // is the object in the liquid?
+  if (movers[i].isInside(liquid)) {
+    let dragForce = movers[i].drag(liquid);
+
+    // is the current drag higher
+    if (dragForce.mag() > movers[i].maxDrag) {
+      movers[i].maxDrag = dragForce.mag();
+      movers[i].maxVelocity = movers[i].velocity.mag();
+    }
+
+    // every 100 milliseconds
+    if (millis() >= 100 + timer) {
+      timerCounter++;
+      plotData[timerCounter] = dragForce.mag();
+      timer = millis();
+    }
+  }
+
+  let m = 0.1 * movers[i].mass;
+  let gravity = createVector(0, m);
+  movers[i].applyForce(gravity);
+
+  movers[i].update();
+  movers[i].display();
+  movers[i].checkEdges();
+
+  output += "Object " + (i + 1) + " - Start Height: " + (height - movers[i].startY).toFixed(2) + ".  ";
+  output += "Max Drag: " + movers[i].maxDrag.toFixed(2) + ".  Max Speed: " + movers[i].maxVelocity.toFixed(2) + ".  ";
+  output += "Current Speed: " + movers[i].velocity.mag() + "<br />";
+  p.html(output);
+
+  chart.update(plotData);
+  chart.display();
+}</code></pre>
+
+  <h2>Result</h2>
+  <p>
+    After all this, as the page is refreshed and the data is collected, the instructions in the exercise provide the
+    answer: the higher the object was dropped from, the higher the speed, the higher the drag force when it hit the
+    water.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Height</th>
+        <th>Max Drag</th>
+        <th>Max Speed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1337.64</td>
+        <td>2.70</td>
+        <td>5.20</td>
+      </tr>
+      <tr>
+        <td>1345.67</td>
+        <td>2.92</td>
+        <td>5.40</td>
+      </tr>
+      <tr>
+        <td>1410.05</td>
+        <td>4.22</td>
+        <td>6.50</td>
+      </tr>
+      <tr>
+        <td>1423.11</td>
+        <td>4.49</td>
+        <td>6.70</td>
+      </tr>
+      <tr>
+        <td>1454.82</td>
+        <td>5.04</td>
+        <td>7.10</td>
+      </tr>
+      <tr>
+        <td>1466.17</td>
+        <td>5.33</td>
+        <td>7.30</td>
+      </tr>
+      <tr>
+        <td>1526.99</td>
+        <td>6.56</td>
+        <td>8.10</td>
+      </tr>
+      <tr>
+        <td>1550.77</td>
+        <td>7.06</td>
+        <td>8.40</td>
+      </tr>
+      <tr>
+        <td>1563.98</td>
+        <td>7.22</td>
+        <td>8.50</td>
+      </tr>
+      <tr>
+        <td>1565.30</td>
+        <td>7.22</td>
+        <td>8.50</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script src="./chart.js"></script>
+  <script src="./liquid.js"></script>
+  <script src="./mover.js"></script>
+  <script src="./sketch.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+
+</html>

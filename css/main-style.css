@@ -46,6 +46,10 @@ li code {
     color: #d63384;
 }
 
+dl code {
+    color: #d63384;
+}
+
 figcaption {
     font-style: italic;
     font-size: 0.85em;
