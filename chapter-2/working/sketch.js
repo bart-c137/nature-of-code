@@ -5,12 +5,12 @@ function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
 
-    liquid = new Liquid(0, height / 2, width, height / 2, 0.1);
+    liquid = new Liquid(0, height / 2, width, height / 2, 5);
 
-    movers = new Array(5);
+    movers = new Array(1);
 
     for (let i = 0; i < movers.length; i++) {
-        movers[i] = new Mover(random(0.1, 5), i * 40, 0);
+        movers[i] = new BoxMover(random(0.1, 5), 200, 200, 50, 100);
     }
 }
 
