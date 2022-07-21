@@ -1,6 +1,8 @@
 class BoxMover {
     constructor(mass, xLocation, yLocation, width, height) {
         this.mass = mass;
+        this.width = width;
+        this.height = height;
 
         this.location = createVector(xLocation, yLocation);
         this.velocity = createVector(0, 0);
@@ -47,7 +49,7 @@ class BoxMover {
 
     drag(liquid) {
         let speed = this.velocity.mag();
-        let dragMagnitude = liquid.coefficientOfDrag * speed * speed;
+        let dragMagnitude = liquid.coefficientOfDrag * speed * speed * this.width;
 
         let drag = this.velocity.copy();
         drag.mult(-1);
@@ -70,6 +72,6 @@ class BoxMover {
     display() {
         stroke(0);
         fill(175);
-        ellipse(this.location.x, this.location.y, this.mass * 16, this.mass * 16);
+        rect(this.location.x, this.location.y, this.width, this.height);
     }
 }
