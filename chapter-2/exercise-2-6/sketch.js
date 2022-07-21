@@ -1,29 +1,36 @@
 var liquid;
 var movers;
 var p;
-var chart;
 var plotData;
 var timerCounter;
 var timer;
 
+function toggleLoop() {
+    if (isLooping()) {
+        noLoop();
+    } else {
+        loop();
+    }
+}
+
 function setup() {
-    let canvas = createCanvas(800, 1600);
+    let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
 
     movers = new Array(1);
 
     for (let i = 0; i < movers.length; i++) {
-        movers[i] = new Mover(3, random(10, 700), random(20, 300));
+        movers[i] = new BoxMover(3, random(10, 400), random(20, 200), random(50, 200), random(50, 200));
     }
 
     liquid = new Liquid(0, 400, width, 400, 0.1);
-    chart = new Chart(0, 20, 0, 11);
 
     p = select("#output");
 
-    plotData = {};
-    timerCounter = 0;
-    timer = 0;
+    let button;
+    button = createButton('Loop');
+    button.position(20,20);
+    button.mousePressed(toggleLoop)
 }
 
 function draw() {
@@ -63,9 +70,5 @@ function draw() {
         output += "Max Drag: " + movers[i].maxDrag.toFixed(2) + ".  Max Speed: " + movers[i].maxVelocity.toFixed(2) + ".  ";
         output += "Current Speed: " + movers[i].velocity.mag() + "<br />";
         p.html(output);
-
-
-        chart.update(plotData);
-        chart.display();
     }
 }

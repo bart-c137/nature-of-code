@@ -37,10 +37,8 @@ class BoxMover {
     }
 
     isInside(liquid) {
-        if (this.location.x >= liquid.x
-            && this.location.x <= liquid.x + liquid.width
-            && this.location.y >= liquid.y
-            && this.location.y <= liquid.y + liquid.height) {
+        // only need to check the bottom of the rectangle
+        if (this.location.y + this.height >= liquid.height) {
             return true;
         } else {
             return false;
