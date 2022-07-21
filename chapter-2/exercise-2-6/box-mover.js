@@ -30,8 +30,8 @@ class BoxMover {
             this.velocity.x *= -1;
         }
 
-        if (this.location.y > height / 2) {
-            this.location.y = height / 2;
+        if (this.location.y + this.height > height) {
+            this.location.y = height - this.height;
             this.velocity.y *= -1;
         }
     }
@@ -47,7 +47,7 @@ class BoxMover {
 
     drag(liquid) {
         let speed = this.velocity.mag();
-        let dragMagnitude = liquid.coefficientOfDrag * speed * speed * this.width;
+        let dragMagnitude = liquid.coefficientOfDrag * speed * speed * this.width * 0.1;
 
         let drag = this.velocity.copy();
         drag.mult(-1);
