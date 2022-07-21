@@ -1,36 +1,20 @@
 var liquid;
 var movers;
 var p;
-var plotData;
-var timerCounter;
-var timer;
-
-function toggleLoop() {
-    if (isLooping()) {
-        noLoop();
-    } else {
-        loop();
-    }
-}
 
 function setup() {
     let canvas = createCanvas(800, 800);
     canvas.parent("canvas");
 
-    movers = new Array(1);
+    movers = new Array(10);
 
     for (let i = 0; i < movers.length; i++) {
-        movers[i] = new BoxMover(3, random(10, 400), random(20, 200), random(50, 200), random(50, 200));
+        movers[i] = new BoxMover(10, random(10, 600), random(20, 200), random(50, 200), random(50, 200));
     }
 
     liquid = new Liquid(0, 400, width, 400, 0.1);
 
     p = select("#output");
-
-    let button;
-    button = createButton('Loop');
-    button.position(20,20);
-    button.mousePressed(toggleLoop)
 }
 
 function draw() {
@@ -49,13 +33,6 @@ function draw() {
                 movers[i].maxDrag = dragForce.mag();
                 movers[i].maxVelocity = movers[i].velocity.mag();
             }
-
-            // every 100 milliseconds
-            if (millis() >= 100 + timer) {
-                timerCounter++;
-                plotData[timerCounter] = dragForce.mag();
-                timer = millis();
-            }
         }
 
         let m = 0.1 * movers[i].mass;
@@ -68,7 +45,7 @@ function draw() {
 
         output += "Object " + (i + 1) + " - Start Height: " + (height - movers[i].startY).toFixed(2) + ".  ";
         output += "Max Drag: " + movers[i].maxDrag.toFixed(2) + ".  Max Speed: " + movers[i].maxVelocity.toFixed(2) + ".  ";
-        output += "Current Speed: " + movers[i].velocity.mag() + "<br />";
+        output += "Surface Area: " + movers[i].width + "<br />";
         p.html(output);
     }
 }
