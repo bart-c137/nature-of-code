@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <script src="../../p5/p5.min.js"></script>
+  <script src="../../p5/addons/p5.sound.min.js"></script>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+    integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+    integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+    crossorigin="anonymous"></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+
+  <!-- Highlight JS -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+  <!-- Main Style-->
+  <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/fonts.css" />
+
+  <title>Exercise 2.6</title>
+</head>
+
+<body>
+  <ul class="breadcrumb">
+    <li><a href="../../index.html">Index</a></li>
+    <li><a href="../index.html">Chapter 2</a></li>
+    <li>Exercise 2.6</li>
+  </ul>
+
+  <h1>Exercise 2.6</h1>
+  <p>
+    The formula for drag also included surface area.  Can you create a simulation of boxes falling into water with a
+    drag force dependent on the length of the side hitting the water?
+  </p>
+
+  <h1>Solution</h1>
+
+  <div id="canvas"></div>
+  <p id="output"></p>
+
+
+  <script src="./chart.js"></script>
+  <script src="./liquid.js"></script>
+  <script src="./box-mover.js"></script>
+  <script src="./sketch.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+
+</html>
