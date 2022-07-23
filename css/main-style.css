@@ -127,3 +127,7 @@ p#output {
     background-color: #e2e3e5;
     border-color: #d3d6d8;
 }
+
+.center {
+    text-align: center;
+}
