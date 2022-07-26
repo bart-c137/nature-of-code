@@ -1,74 +1,88 @@
 /**
- * The Computer Modern fonts are really great and match the KaTeX library fonts but they do not read well on the
- * screen, or atleast they don't to me.  I am leaving them in the CSS file so I can experiment later but will replace
- * them with something that looks nicer on the screen.
+ * Computer Modern Fonts downloaded from https://sourceforge.net/projects/cm-unicode/.  There are CDN versions but I
+ * don't know the quality of them.  These look pretty good.
  **/
-
-/*
- * COMPUTER MODERN CONCRETE FONT
- */
-@font-face {
-    font-family: 'Computer Modern Concrete';
-    src: url('../fonts/cm-font/cmunorm.otf');
-}
-
-@font-face {
-    font-family: 'Computer Modern Concrete';
-    src: url('../fonts/cm-font/cmunobx.otf');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Computer Modern Concrete';
-    src: url('../fonts/cm-font/cmunoti.otf');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Computer Modern Concrete';
-    src: url('../fonts/cm-font/cmunobi.otf');
-    font-weight: bold;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Computer Modern Typewriter';
-    src: url('../cm-font/cmuntt.otf');
-}
-
-@font-face {
-    font-family: 'Computer Modern Typewriter';
-    src: url('../fonts/cm-font/cmuntb.otf');
-    font-weight: bold;
-}
-
 
 /*
  * COMPUTER MODERN FONT
  */
 @font-face {
     font-family: 'Computer Modern';
-    src: url('../fonts/cm-font/cmunrm.otf');
+    src: url('../fonts/cm-font/cmunrm.ttf');
 }
 
 @font-face {
     font-family: 'Computer Modern';
-    src: url('../fonts/cm-font/cmunbx.otf');
+    src: url('../fonts/cm-font/cmunbx.ttf');
     font-weight: bold;
 }
 
 @font-face {
     font-family: 'Computer Modern';
-    src: url('../fonts/cm-font/cmunti.otf');
+    src: url('../fonts/cm-font/cmunti.ttf');
     font-style: italic;
 }
 
 @font-face {
     font-family: 'Computer Modern';
-    src: url('../fonts/cm-font/cmunbi.otf');
+    src: url('../fonts/cm-font/cmunbi.ttf');
     font-weight: bold;
     font-style: italic;
 }
+
+/*
+ * COMPUTER MODERN BRIGHT
+ */
+@font-face {
+    font-family: 'Computer Modern Bright';
+    src: url('../fonts/cm-font/cmunbmr.ttf');
+}
+
+@font-face {
+    font-family: 'Computer Modern Bright';
+    src: url('../fonts/cm-font/cmunbbx.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Computer Modern Bright';
+    src: url('../fonts/cm-font/cmunbmo.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Computer Modern Bright';
+    src: url('../fonts/cm-font/cmunbxo.ttf');
+    font-weight: bold;
+    font-style: italic;
+}
+
+/*
+ * COMPUTER MODERN TYPEWRITTER
+ */
+ @font-face {
+    font-family: 'Computer Modern Typewriter';
+    src: url('../fonts/cm-font/cmuntt.ttf');
+ }
+
+ @font-face {
+    font-family: 'Computer Modern Typewriter';
+    src: url('../fonts/cm-font/cmunit.ttf');
+    font-style: italic;
+ }
+
+ @font-face {
+    font-family: 'Computer Modern Typewriter';
+    src: url('../fonts/cm-font/cmuntb.ttf');
+    font-weight: bold;
+ }
+
+ @font-face {
+    font-family: 'Computer Modern Typewriter';
+    src: url('../fonts/cm-font/cmuntx.ttf');
+    font-weight: bold;
+    font-style: italic;
+ }
 
 /*
  * LINUX LIBERTING FONT
