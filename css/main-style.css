@@ -11,20 +11,11 @@ body {
     margin-right: auto;
     width: 960px;
 
-    font-family: 'Linux Libertine', serif;
+    font-family: 'Computer Modern', serif;
     font-size: 16px;
     line-height: 1.5;
 
     text-align: justify;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Linux Biolinum', 'Inconsolata', sans-serif;
 }
 
 canvas {
@@ -34,8 +25,7 @@ canvas {
 }
 
 pre, code {
-    font-family: 'Inconsolata', monospace;
-    font-size: 0.9em;
+    font-family: 'Computer Modern Typewriter', monospace;
 }
 
 p code {
@@ -57,28 +47,6 @@ figcaption {
 
 pre code {
     border-radius: 0.25rem;
-}
-
-/*
- * Breadcrumb Navigation
- */
-ul.breadcrumb {
-    padding: 10px 16px;
-    list-style: none;
-    background-color: #eeeeee;
-
-    font-family: 'Linux Biolinum', sans-serif;
-}
-
-ul.breadcrumb li {
-    display: inline;
-    font-size: 18px;
-}
-
-ul.breadcrumb li+li::before {
-    padding: 8px;
-    color: #000000;
-    content: "/\00a0";
 }
 
 table,
@@ -104,7 +72,32 @@ td {
     padding: 3px;
 }
 
-/* Copied directly from Bootstrap */
+/*
+ * Breadcrumb Navigation, copied almost directly from https://www.w3schools.com/howto/howto_css_breadcrumbs.asp.
+ */
+ul.breadcrumb {
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eeeeee;
+
+    font-family: 'Computer Modern Bright', sans-serif;
+}
+
+ul.breadcrumb li {
+    display: inline;
+    font-size: 18px;
+}
+
+ul.breadcrumb li+li::before {
+    padding: 8px;
+    color: #000000;
+    content: "/\00a0";
+}
+
+/*
+ * Helper clases for various things, most are copied directly from Bootstrap.  I don't have a need for the full
+ * Bootstrap CSS.
+ */
 p.warning {
     position: relative;
     padding: 1rem 1rem;
@@ -116,8 +109,24 @@ p.warning {
     border-color: #ffecb5;
 }
 
+
+.center {
+    text-align: center;
+}
+
+/*
+ * By default the KaTeX font size is 1.2 em, this changes it back to match the rest of the font.
+ */
+.katex {
+    font-size: 1em;
+}
+
+
+/*
+ * Style for the output paragraph.  It's very similar, maybe exact, to the Bootstrap muted style.
+ */
 p#output {
-    font-family: 'Inconsolata', monospace;
+    font-family: 'Computer Modern Typewriter', monospace;
     position: relative;
     padding: 1rem 1rem;
     margin-bottom: 1rem;
@@ -126,8 +135,4 @@ p#output {
     color: #41464b;
     background-color: #e2e3e5;
     border-color: #d3d6d8;
-}
-
-.center {
-    text-align: center;
 }
