@@ -36,6 +36,7 @@ class BoxMover {
     }
 
     fly() {
+        // fly from left to right
         let a = createVector(0.1, 0);
         this.applyForce(a);
     }
@@ -44,7 +45,7 @@ class BoxMover {
         let speed = this.velocity.mag();
         let dragMagnitude = 0.1 * speed * speed;
 
-        // rotate the drag vector
+        // rotate the drag vector to be perpendicular of velocity
         let dragX = this.velocity.y * -1;
         let dragY = this.velocity.x * 1;
         dragY *= -1; // rotate because "up" is negative on the screen
