@@ -46,15 +46,37 @@
 
   <h1>Exercise 2.7</h1>
   <p>
-    Fluid resistance does not only work opposite to the velocity vector, but also perpendicular to it.  This is known
-    as "lift-inducing" drag and will cause an airplane with an angled wind to rise in altitude.  Try creating a
+    Fluid resistance does not only work opposite to the velocity vector, but also perpendicular to it. This is known
+    as "lift-inducing" drag and will cause an airplane with an angled wind to rise in altitude. Try creating a
     simulation of lift.
   </p>
 
   <h1>Solution</h1>
 
   <div id="canvas"></div>
-  <p id="output"></p>
+
+  <p>
+    The way to solve this is to realize the drag is not being applied opposite of the velocity, it is applied
+    perpendicular to velocity. For this exercise specifically, it is applied "up" to simulate lift. "Up" is a 90 degree
+    rotation of the velocity vector on the canvas. A vector can be rotated by 90 degrees (perpendicular) by multiplying
+    the vector by the matrix
+    $$
+    \begin{bmatrix}
+    0 & -1 \\
+    1 & 0
+    \end{bmatrix}
+    $$
+    Assuming the velocity vector is \(\vec{v} = \langle x, y \rangle\) and \(\vec{d}\) is the rotated drag vector
+    $$
+    \begin{align*}
+    \vec{d} &= \vec{v} \times \begin{bmatrix}0 & -1 \\ 1 & 0 \end{bmatrix} \\
+    &= \langle x, y \rangle \times \begin{bmatrix}0 & -1 \\ 1 & 0 \end{bmatrix} \\
+    &= \langle x \cdot 0 + y \cdot -1, x \cdot 1 + y \cdot 0 \rangle \\
+    &= \langle 0 - y, x + 0 \rangle \\
+    &= \langle -y, x \rangle
+    \end{align*}
+    $$
+  </p>
 
   <script src="./box-mover.js"></script>
   <script src="./sketch.js"></script>
