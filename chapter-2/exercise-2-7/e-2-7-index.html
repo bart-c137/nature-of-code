@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <script src="../../p5/p5.min.js"></script>
+  <script src="../../p5/addons/p5.sound.min.js"></script>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+    integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+
+  <!-- The loading of KaTeX is deferred to speed up page rendering -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+    integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+    crossorigin="anonymous"></script>
+
+  <!-- To automatically render math in text elements, include the auto-render extension: -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+
+  <!-- Highlight JS -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/stackoverflow-dark.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+  <!-- Main Style-->
+  <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/main-style.css" />
+  <link rel="stylesheet" type="text/css" href="../../css/fonts.css" />
+
+  <title>Exercise 2.6</title>
+</head>
+
+<body>
+  <ul class="breadcrumb">
+    <li><a href="../../index.html">Index</a></li>
+    <li><a href="../index.html">Chapter 2</a></li>
+    <li>Exercise 2.7</li>
+  </ul>
+
+  <h1>Exercise 2.7</h1>
+  <p>
+    Fluid resistance does not only work opposite to the velocity vector, but also perpendicular to it. This is known
+    as "lift-inducing" drag and will cause an airplane with an angled wind to rise in altitude. Try creating a
+    simulation of lift.
+  </p>
+
+  <h1>Solution</h1>
+
+  <div id="canvas"></div>
+
+  <p>
+    The way to solve this is to realize the drag is not being applied opposite of the velocity, it is applied
+    perpendicular to velocity. For this exercise specifically, it is applied "up" to simulate lift. "Up" is a 90 degree
+    rotation of the velocity vector on the canvas. A vector can be rotated by 90 degrees (perpendicular) by multiplying
+    the vector by the matrix
+    $$
+    \begin{bmatrix}
+    0 & -1 \\
+    1 & 0
+    \end{bmatrix}
+    $$
+    Assuming the velocity vector is \(\vec{v} = \langle x, y \rangle\) and \(\vec{d}\) is the rotated drag vector, then
+    $$
+    \begin{align*}
+    \vec{d} &= \vec{v} \times \begin{bmatrix}0 & -1 \\ 1 & 0 \end{bmatrix} \\
+    &= \langle x, y \rangle \times \begin{bmatrix}0 & -1 \\ 1 & 0 \end{bmatrix} \\
+    &= \langle x \cdot 0 + y \cdot -1, x \cdot 1 + y \cdot 0 \rangle \\
+    &= \langle 0 - y, x + 0 \rangle \\
+    &= \langle -y, x \rangle
+    \end{align*}
+    $$
+    As a result, the only thing to do is to change the <code>drag()</code> function to implement this rotated drag
+    vector. I changed the name from <code>drag()</code> to <code>lift()</code>.
+  </p>
+
+  <pre><code class="language-javascript">lift() {
+  let speed = this.velocity.mag();
+  let dragMagnitude = 0.1 * speed * speed;
+
+  // rotate the drag vector to be perpendicular of velocity
+  let dragX = this.velocity.y * -1;
+  let dragY = this.velocity.x * 1;
+  dragY *= -1; // rotate because "up" is negative on the screen
+
+  let drag = createVector(dragX, dragY);
+
+  drag.normalize();
+  drag.mult(dragMagnitude);
+  this.applyForce(drag);
+
+  return drag;
+}</code></pre>
+
+  <p>
+    Note there is no need to perform the matrix multiplication, just use the \(x\) and \(y\) parts of the velocity
+    vector making sure to turn the \(y\) negative. Also, the \(y\) portion for the drag vector needs to be multiplied
+    by -1 to make sure it goes "up" on the screen.
+  </p>
+
+  <p>
+    I added a function <code>fly()</code> to apply a force to move the object from left to right.
+  </p>
+
+  <pre><code class="language-javascript">fly() {
+  // fly from left to right
+  let a = createVector(0.1, 0);
+  this.applyForce(a);
+}</code></pre>
+
+  <p>
+    In <code>sketch.js</code> I added the calls to <code>fly()</code> and <code>lift()</code> to create the simulation.
+  </p>
+
+  <pre><code class="language-javascript>">function draw() {
+  background('#dfdfdf');
+
+  wing.fly();
+  wing.lift();
+
+  let m = 0.1 * wing.mass;
+  let gravity = createVector(0, m);
+  wing.applyForce(gravity);
+
+  wing.update();
+  wing.display();
+  wing.checkEdges();
+}</code></pre>
+  <script src="./box-mover.js"></script>
+  <script src="./sketch.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+
+</html>
