@@ -66,7 +66,7 @@
     1 & 0
     \end{bmatrix}
     $$
-    Assuming the velocity vector is \(\vec{v} = \langle x, y \rangle\) and \(\vec{d}\) is the rotated drag vector
+    Assuming the velocity vector is \(\vec{v} = \langle x, y \rangle\) and \(\vec{d}\) is the rotated drag vector, then
     $$
     \begin{align*}
     \vec{d} &= \vec{v} \times \begin{bmatrix}0 & -1 \\ 1 & 0 \end{bmatrix} \\
@@ -76,8 +76,62 @@
     &= \langle -y, x \rangle
     \end{align*}
     $$
+    As a result, the only thing to do is to change the <code>drag()</code> function to implement this rotated drag
+    vector. I changed the name from <code>drag()</code> to <code>lift()</code>.
   </p>
 
+  <pre><code class="language-javascript">lift() {
+  let speed = this.velocity.mag();
+  let dragMagnitude = 0.1 * speed * speed;
+
+  // rotate the drag vector to be perpendicular of velocity
+  let dragX = this.velocity.y * -1;
+  let dragY = this.velocity.x * 1;
+  dragY *= -1; // rotate because "up" is negative on the screen
+
+  let drag = createVector(dragX, dragY);
+
+  drag.normalize();
+  drag.mult(dragMagnitude);
+  this.applyForce(drag);
+
+  return drag;
+}</code></pre>
+
+  <p>
+    Note there is no need to perform the matrix multiplication, just use the \(x\) and \(y\) parts of the velocity
+    vector making sure to turn the \(y\) negative. Also, the \(y\) portion for the drag vector needs to be multiplied
+    by -1 to make sure it goes "up" on the screen.
+  </p>
+
+  <p>
+    I added a function <code>fly()</code> to apply a force to move the object from left to right.
+  </p>
+
+  <pre><code class="language-javascript">fly() {
+  // fly from left to right
+  let a = createVector(0.1, 0);
+  this.applyForce(a);
+}</code></pre>
+
+  <p>
+    In <code>sketch.js</code> I added the calls to <code>fly()</code> and <code>lift()</code> to create the simulation.
+  </p>
+
+  <pre><code class="language-javascript>">function draw() {
+  background('#dfdfdf');
+
+  wing.fly();
+  wing.lift();
+
+  let m = 0.1 * wing.mass;
+  let gravity = createVector(0, m);
+  wing.applyForce(gravity);
+
+  wing.update();
+  wing.display();
+  wing.checkEdges();
+}</code></pre>
   <script src="./box-mover.js"></script>
   <script src="./sketch.js"></script>
   <script>hljs.highlightAll();</script>
